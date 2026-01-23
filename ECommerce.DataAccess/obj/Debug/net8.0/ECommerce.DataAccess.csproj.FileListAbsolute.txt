@@ -14,3 +14,19 @@ C:\Users\Hp\Desktop\New folder\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.D
 C:\Users\Hp\Desktop\New folder\ECommerce.DataAccess\obj\Debug\net8.0\refint\ECommerce.DataAccess.dll
 C:\Users\Hp\Desktop\New folder\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.pdb
 C:\Users\Hp\Desktop\New folder\ECommerce.DataAccess\obj\Debug\net8.0\ref\ECommerce.DataAccess.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\bin\Debug\net8.0\ECommerce.DataAccess.deps.json
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\bin\Debug\net8.0\ECommerce.DataAccess.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\bin\Debug\net8.0\ECommerce.DataAccess.pdb
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\bin\Debug\net8.0\ECommerce.Domain.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\bin\Debug\net8.0\ECommerce.Domain.pdb
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.csproj.AssemblyReference.cache
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.AssemblyInfoInputs.cache
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.AssemblyInfo.cs
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.csproj.CoreCompileInputs.cache
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.sourcelink.json
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerc.6DA24EC5.Up2Date
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\refint\ECommerce.DataAccess.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ECommerce.DataAccess.pdb
+C:\Users\Hp\Desktop\ECommerce\ECommerce.DataAccess\obj\Debug\net8.0\ref\ECommerce.DataAccess.dll

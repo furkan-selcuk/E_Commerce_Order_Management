@@ -1,0 +1,36 @@
+﻿@page "/Error"
+@using System.Diagnostics
+
+<PageTitle>Hata</PageTitle>
+
+<h1 class="text-danger">Hata.</h1>
+<h2 class="text-danger">İsteğiniz işlenirken bir hata oluştu.</h2>
+
+@if (ShowRequestId)
+{
+    <p>
+        <strong>İstek Kimliği:</strong> <code>@RequestId</code>
+    </p>
+}
+
+<h3>Geliştirme Modu</h3>
+<p>
+    <strong>Development</strong> ortamına geçildiğinde, oluşan hatayla ilgili daha ayrıntılı bilgiler görüntülenir.
+</p>
+<p>
+    <strong>Geliştirme ortamı, yayına alınmış uygulamalarda etkinleştirilmemelidir.</strong>
+    Aksi halde istisnalardan kaynaklanan hassas bilgiler son kullanıcılara gösterilebilir.
+    Yerel hata ayıklama için <strong>ASPNETCORE_ENVIRONMENT</strong> ortam değişkenini
+    <strong>Development</strong> olarak ayarlayıp uygulamayı yeniden başlatın.
+</p>
+
+@code{
+    [CascadingParameter]
+    private HttpContext? HttpContext { get; set; }
+
+    private string? RequestId { get; set; }
+    private bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+    protected override void OnInitialized() =>
+        RequestId = Activity.Current?.Id ?? HttpContext?.TraceIdentifier;
+}

@@ -18,41 +18,58 @@ namespace ECommerce.Application.Services
         public async Task<IEnumerable<StokListDto>> GetAllAsync()
         {
             var stoklar = await _stokRepository.GetAllAsync();
-
+ 
             return stoklar.Select(s => new StokListDto
             {
-                Id = s.Id,
-                Ad = s.Ad,
-                Miktar = s.Miktar,
-                Fiyat = s.Fiyat
+                StokId = s.StokId,
+                StokKodu = s.StokKodu,
+                StokAdi = s.StokAdi,
+                StokMiktar = s.StokMiktar,
+                BirimFiyat = s.BirimFiyat
             });
+        }
+        // idiye gör stok bilgilerini getirme
+        public async Task<StokListDto?> GetByIdAsync(int id)
+        {
+            var s = await _stokRepository.GetByIdAsync(id);
+            if (s == null) return null;
+            return new StokListDto
+            {
+                StokId = s.StokId,
+                StokKodu = s.StokKodu,
+                StokAdi = s.StokAdi,
+                StokMiktar = s.StokMiktar,
+                BirimFiyat = s.BirimFiyat
+            };
         }
         // yeni stok ekleme
         public async Task AddAsync(StokCreateDto dto)
         {
-            if (dto.Miktar < 0)
+            if (dto.StokMiktar < 0)
                 throw new BusinessException("Stok miktar negatif olamaz");
-
+ 
             var stok = new Stok
             {
-                Ad = dto.Ad,
-                Miktar = dto.Miktar,
-                Fiyat = dto.Fiyat
+                StokKodu = dto.StokKodu,
+                StokAdi = dto.StokAdi,
+                StokMiktar = dto.StokMiktar,
+                BirimFiyat = dto.BirimFiyat
             };
-
+ 
             await _stokRepository.AddAsync(stok);
         }
         // stok güncelleme
         public async Task UpdateAsync(StokUpdateDto dto)
         {
-            var stok = await _stokRepository.GetByIdAsync(dto.Id);
+            var stok = await _stokRepository.GetByIdAsync(dto.StokId);
             if (stok == null)
-                throw new NotFoundException("Stok bulunamad");
-
-            stok.Ad = dto.Ad;
-            stok.Miktar = dto.Miktar;
-            stok.Fiyat = dto.Fiyat;
-
+                throw new NotFoundException("Stok bulunamadı");
+ 
+            stok.StokKodu = dto.StokKodu;
+            stok.StokAdi = dto.StokAdi;
+            stok.StokMiktar = dto.StokMiktar;
+            stok.BirimFiyat = dto.BirimFiyat;
+ 
             await _stokRepository.UpdateAsync(stok);
         }
         // stok silme

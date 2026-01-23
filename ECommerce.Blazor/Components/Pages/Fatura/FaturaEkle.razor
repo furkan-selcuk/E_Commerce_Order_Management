@@ -1,0 +1,542 @@
+@using DevExpress.Blazor
+@using ECommerce.Blazor.Services
+@using ECommerce.Blazor.Models
+@inject FaturaService FaturaService
+@inject StokService StokService
+@inject CariService CariService
+
+<div class="fatura-container">
+    <!-- Toolbar -->
+    <div class="fatura-toolbar">
+        <DxButton Click="@SaveFatura" CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="btn-content">
+                    <i class="bi bi-floppy icon-lg"></i>
+                    <span>Kaydet</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="btn-content">
+                    <i class="bi bi-list-ul icon-lg"></i>
+                    <span>Liste</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="btn-content">
+                    <i class="bi bi-files icon-lg"></i>
+                    <span>Diğer</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="btn-content">
+                    <i class="bi bi-printer icon-lg"></i>
+                    <span>Yazdır</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="btn-content">
+                    <i class="bi bi-search icon-lg"></i>
+                    <span>Ön İzleme</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="btn-content">
+                    <i class="bi bi-box-arrow-right icon-lg"></i>
+                    <span>Kapat</span>
+                </div>
+            </Content>
+        </DxButton>
+    </div>
+
+    <!-- Ana İçerik -->
+    <div class="fatura-content">
+        @if (showToast)
+        {
+            <div class="toast @toastClass">@toastMessage</div>
+        }
+        <!-- Üst Form Alanları -->
+        <div class="fatura-header">
+            <div class="header-grid">
+                <div class="header-column">
+                    <DxFormLayout>
+                        <DxFormLayoutItem Caption="Cari Seç:" ColSpanMd="12">
+                            <div class="input-group">
+                                <DxComboBox Data="@CariList" @bind-Value="selectedCariId" ValueFieldName="Id"
+                                    TextFieldName="CariAdi" Placeholder="Cari seç">
+                                </DxComboBox>
+                            </div>
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Cari Ünvanı:" ColSpanMd="12">
+                            <div class="input-group">
+                                <DxTextBox @bind-Text="@CariUnvani" ReadOnly="true" />
+                            </div>
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Tarih-Saat:" ColSpanMd="12">
+                            <div class="date-group">
+                                <DxDateEdit @bind-Date="@FaturaTarihi" />
+                            </div>
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Vadesi:" ColSpanMd="12">
+                            <DxTextBox @bind-Text="@Vade" />
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Proje:" ColSpanMd="12">
+                            <div class="input-group">
+                                <DxTextBox @bind-Text="@Proje" />
+                                <DxButton Text="..." RenderStyle="ButtonRenderStyle.Secondary"
+                                    SizeMode="SizeMode.Small" />
+                                <DxButton Text="T" RenderStyle="ButtonRenderStyle.Secondary"
+                                    SizeMode="SizeMode.Small" />
+                            </div>
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Ödeme Tipi:" ColSpanMd="12">
+                            <DxComboBox Data="@OdemeTipiListesi" @bind-Value="@OdemeTipi" />
+                        </DxFormLayoutItem>
+                    </DxFormLayout>
+                </div>
+
+                <div class="header-column">
+                    <DxFormLayout>
+                        <DxFormLayoutItem Caption="Fatura Tipi:" ColSpanMd="12">
+                            <div class="input-group">
+                                <DxTextBox @bind-Text="@FaturaTipi" />
+                                <DxButton Text="..." RenderStyle="ButtonRenderStyle.Secondary"
+                                    SizeMode="SizeMode.Small" />
+                            </div>
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Numeratör Takibi :" ColSpanMd="12">
+                            <DxCheckBox @bind-Checked="@NumeratorTakibi" Text="Numeratör takibi yapılmasın" />
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Evrak No:" ColSpanMd="12">
+                            <div class="evrak-group">
+                                <DxTextBox @bind-Text="@EvrakNo" />
+                                <DxButton IconCssClass="bi bi-arrow-clockwise" RenderStyle="ButtonRenderStyle.Secondary"
+                                    SizeMode="SizeMode.Small" />
+                                <DxButton IconCssClass="bi bi-files" RenderStyle="ButtonRenderStyle.Secondary"
+                                    SizeMode="SizeMode.Small" />
+                            </div>
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="İrsaliye Tarihi:" ColSpanMd="12">
+                            <DxTextBox @bind-Text="@IrsaliyeTarihi" />
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="İrsaliye No:" ColSpanMd="12">
+                            <DxTextBox @bind-Text="@IrsaliyeNo" />
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Depo:" ColSpanMd="12">
+                            <DxComboBox Data="@DepoListesi" @bind-Value="@Depo" />
+                        </DxFormLayoutItem>
+                        <DxFormLayoutItem Caption="Plasiyer:" ColSpanMd="12">
+                            <div class="input-group">
+                                <DxTextBox @bind-Text="@Plasiyer" />
+                                <DxButton Text="SİL" RenderStyle="ButtonRenderStyle.Secondary"
+                                    SizeMode="SizeMode.Small" />
+                                <DxButton Text="SEÇ" RenderStyle="ButtonRenderStyle.Secondary"
+                                    SizeMode="SizeMode.Small" />
+                            </div>
+                        </DxFormLayoutItem>
+                    </DxFormLayout>
+                </div>
+
+                <div class="header-column">
+                    <div class="payment-panel">
+                        <DxFormLayout CssClass="payment-layout">
+                            <DxFormLayoutItem Caption="Ön Ödemeli Satış:" ColSpanMd="12">
+                                <DxCheckBox @bind-Checked="@PesinOdemeliSatis" Text="Ön Ödemeli Satış *" />
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Cari Para Kodu:" ColSpanMd="12">
+                                <DxComboBox Data="@ParaKoduListesi" @bind-Value="@CariParaKodu" />
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Döviz Kuru:" ColSpanMd="12">
+                                <DxTextBox @bind-Text="@DovizKuru" />
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Akt. Tutar:" ColSpanMd="12">
+                                <DxTextBox @bind-Text="@AktTutar" ReadOnly="true" />
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Stok Fiyat Tipi:" ColSpanMd="12">
+                                <DxComboBox Data="@FiyatTipiListesi" @bind-Value="@StokFiyatTipi" />
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Birim Fiyat Kdv Dahil:" ColSpanMd="12">
+                                <DxCheckBox @bind-Checked="@BirimFiyatKdvDahil" Text="Birim Fiyat Kdv Dahil" />
+                            </DxFormLayoutItem>
+                        </DxFormLayout>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab Sekmeler, -->
+        <div class="fatura-tabs-section">
+            <DxTabs @bind-ActiveTabIndex="@ActiveTabIndex" CssClass="fatura-tabs">
+                <DxTab Text="Satırlar" />
+                <DxTab Text="Ek Bilgiler" />
+                <DxTab Text="Notlar" />
+                <DxTab Text="Diğer" />
+                <DxTab Text="İrsaliye Bilgileri" />
+                <DxTab Text="Döviz Kurları" />
+                <DxTab Text="Ödeme Planı" />
+            </DxTabs>
+
+            <div class="tabs-content">
+                @if (ActiveTabIndex == 0)
+                {
+                    <!-- Satırlar Gridi -->
+                    <div style="margin-bottom:12px;display:flex;gap:8px;align-items:end;">
+                        <div style="display:flex;gap:8px;align-items:center;">
+                            <DxComboBox Data="@StokList" @bind-Value="newSelectedStokId" ValueFieldName="StokId"
+                                TextFieldName="StokAdi" Placeholder="Stok seçç">
+                            </DxComboBox>
+
+
+
+                            
+                            <DxTextBox Placeholder="Miktar" @bind-Text="newMiktarStr" CssClass="total-input" />
+                            <DxTextBox Placeholder="Birim Fiyat" @bind-Text="newBirimFiyatStr" CssClass="total-input" />
+                            <DxButton Text="Satır Ekle" Click="AddSatir" RenderStyle="ButtonRenderStyle.Primary" />
+                        </div>
+                    </div>
+                    <div class="satir-grid-wrapper">
+                        <DxGrid Data="@FaturaSatirlari" CssClass="fatura-grid">
+                            <Columns>
+                                <DxGridDataColumn Caption="Satır" FieldName="Satir" Width="60px" />
+                                <DxGridDataColumn Caption="Kod" FieldName="Kod" Width="100px" />
+                                <DxGridDataColumn Caption="Adı" FieldName="Adi" />
+                                <DxGridDataColumn Caption="Miktar" FieldName="Miktar" Width="100px" />
+                                <DxGridDataColumn Caption="Birim" FieldName="Birim" Width="80px" />
+                                <DxGridDataColumn Caption="Birim F" FieldName="BirimF" Width="100px" />
+                                <DxGridDataColumn Caption="İskonto" FieldName="Iskonto" Width="100px" />
+                                <DxGridDataColumn Caption="İskonto Adı" FieldName="IskontoAdi" Width="120px" />
+                                <DxGridDataColumn Caption="Tevkifat" FieldName="Tevkifat" Width="100px" />
+                                <DxGridDataColumn Caption="Tevkifat Kodu" FieldName="TevkifatKodu" Width="120px" />
+                                <DxGridDataColumn Caption="Tevkifat Adı" FieldName="TevkifatAdi" Width="120px" />
+                                <DxGridDataColumn Caption="Tevkifat" FieldName="TevkifatTutar" Width="100px" />
+                                <DxGridDataColumn Caption="Para" FieldName="Para" Width="80px" />
+                                <DxGridDataColumn Caption="İsk.1" FieldName="Isk1" Width="80px" />
+                                <DxGridDataColumn Caption="İsk.2" FieldName="Isk2" Width="80px" />
+                                <DxGridDataColumn Caption="Kdv" FieldName="Kdv" Width="80px" />
+                                <DxGridDataColumn Caption="KDV Ma" FieldName="KdvMa" Width="100px" />
+                                <DxGridDataColumn Caption="Kdv" FieldName="KdvTutar" Width="100px" />
+                                <DxGridDataColumn Caption="Net Birim F" FieldName="NetBirimF" Width="100px" />
+                                <DxGridDataColumn Caption="Tutar" FieldName="Tutar" Width="120px" />
+                                <DxGridDataColumn Caption="Yere" FieldName="Yere" Width="80px" />
+                                <DxGridDataColumn Caption="Yerel Tut" FieldName="YerelTut" Width="120px" />
+                            </Columns>
+                        </DxGrid>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Alt Toplam Alanı -->
+        <div class="fatura-footer">
+            <div class="footer-content">
+                <DxFormLayout CssClass="payment-layout">
+                    <DxFormLayoutItem Caption="Alt isk 1:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Alt isk 2:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Alt isk 3:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Açıklama+:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+            </div>
+             <div class="footer-content">
+                <DxFormLayout CssClass="payment-layout">
+                    <DxFormLayoutItem Caption="Brüt Toplam:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Toplam Satır isk:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Toplam Alt isk:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Toplam İskonto:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+            </div>
+             <div class="footer-content">
+                <DxFormLayout CssClass="payment-layout">
+                    <DxFormLayoutItem Caption="Ara Toplam:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Tevkifat kdv:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="satır KDV:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Genel Toplam:" ColSpanMd="12">
+                        <DxTextBox @bind-Text="AktTutar" ReadOnly="true" />
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    int ActiveTabIndex = 0;
+
+    string CariKodu = "";
+    string CariUnvani = "";
+    DateTime FaturaTarihi = DateTime.Now;
+    string Vade = "";
+    string Proje = "";
+    string OdemeTipi = "";
+    string FaturaTipi = "";
+    bool NumeratorTakibi = false;
+    string EvrakNo = "";
+    string IrsaliyeTarihi = "";
+    string IrsaliyeNo = "";
+    string Depo = "";
+    string Plasiyer = "";
+    bool PesinOdemeliSatis = true;
+    string CariParaKodu = "";
+    string DovizKuru = "";
+    string AktTutar = "";
+    string StokFiyatTipi = "";
+    bool BirimFiyatKdvDahil = false;
+
+    List<string> OdemeTipiListesi = new() { "Nakit", "Kredi Kartı", "Havale" };
+    List<string> DepoListesi = new() { "Ana Depo", "Yedek Depo" };
+    List<string> ParaKoduListesi = new() { "TRY", "USD", "EUR" };
+    List<string> FiyatTipiListesi = new() { "Perakende", "Toptan" };
+
+    List<FaturaSatir> FaturaSatirlari = new();
+    private int? _newSelectedStokId;
+    int? newSelectedStokId
+    {
+        get => _newSelectedStokId;
+        set
+        {
+            _newSelectedStokId = value;
+            SelectedStok = StokList.FirstOrDefault(s => s.StokId == value);
+            if (SelectedStok != null)
+            {
+                newBirimFiyatStr = SelectedStok.BirimFiyat.ToString("0.##");
+            }
+        }
+    }
+    List<StokListDto> StokList = new();
+    string newMiktarStr = "1";
+    string newBirimFiyatStr = "0";
+
+    [Parameter] public EventCallback OnSaved { get; set; }
+    List<CariListDto> CariList = new();
+    CariListDto? SelectedCari = null;
+    StokListDto? SelectedStok = null;
+    private int? _selectedCariId;
+    int? selectedCariId
+    {
+        get => _selectedCariId;
+        set
+        {
+            _selectedCariId = value;
+            SelectedCari = CariList.FirstOrDefault(x => x.Id == value);
+            if (SelectedCari != null)
+            {
+                CariUnvani = SelectedCari.CariAdi;
+            }
+        }
+    }
+
+    void AddSatir()
+    {
+        int stokId = newSelectedStokId ?? 0;
+        decimal miktar = 0;
+        decimal.TryParse(newMiktarStr, out miktar);
+        decimal birim = 0;
+        decimal.TryParse(newBirimFiyatStr, out birim);
+
+        var stok = StokList.FirstOrDefault(s => s.StokId == stokId);
+        var kod = stokId.ToString();
+        var adi = stok?.StokAdi ?? "Seçilen stok yok";
+
+        var satir = new FaturaSatir
+        {
+            Satir = FaturaSatirlari.Count + 1,
+            Kod = kod,
+            StokId = stokId,
+            Adi = adi,
+            Miktar = miktar,
+            Birim = "",
+            BirimF = birim,
+            Tutar = miktar * birim
+        };
+
+        FaturaSatirlari.Add(satir);
+
+        newSelectedStokId = null;
+        newMiktarStr = "1";
+        newBirimFiyatStr = "0";
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadLookupDataAsync();
+    }
+
+    private async Task LoadLookupDataAsync()
+    {
+        try
+        {
+            var stocksTask = StokService.GetAllAsync();
+            var carisTask = CariService.GetAllAsync();
+            StokList = await stocksTask;
+            CariList = await carisTask;
+        }
+        catch (Exception ex)
+        {
+            ShowToast($"Lookup verileri yüklenirken hata: {ex.Message}");
+        }
+    }
+
+    void RemoveSatir(int index)
+    {
+        if (index >= 0 && index < FaturaSatirlari.Count)
+            FaturaSatirlari.RemoveAt(index);
+    }
+
+    string toastMessage = "";
+    bool showToast = false;
+    string toastClass = "";
+
+    void ShowToast(string message, bool isError = true)
+{
+    toastMessage = message;
+    toastClass = isError ? "toast-error" : "toast-success";
+    showToast = true;
+
+    
+    InvokeAsync(StateHasChanged);
+
+    _ = Task.Run(async () =>
+    {
+        await Task.Delay(3000);
+        showToast = false;
+        await InvokeAsync(StateHasChanged);
+    });
+}
+
+    async Task SaveFatura()
+{
+    Console.WriteLine("SaveFatura tetiklendi");
+    if (!FaturaSatirlari.Any())
+    {
+        Console.WriteLine("SaveFatura tetiklendii");
+        ShowToast(message: "Fatura en az bir satır içermelidir.");
+        return;
+    }
+
+    int parsedCariId = selectedCariId ?? 0;
+    if (parsedCariId == 0)
+    {
+        ShowToast("Lütfen bir cari seçin.");
+        return;
+    }
+
+    foreach (var s in FaturaSatirlari)
+    {
+        if (s.StokId <= 0)
+        {
+            ShowToast("Satırlarda geçerli stok seçimi yok.");
+            return;
+        }
+        if (s.Miktar <= 0)
+        {
+            ShowToast("Satırlardaki miktarlar 0'dan büyük olmalıdır.");
+            return;
+        }
+    }
+
+    var dto = new FaturaCreateDto
+    {
+        CariId = parsedCariId,
+        FaturaTarihi = FaturaTarihi,
+        Satirlar = FaturaSatirlari.Select(s => new FaturaSatirCreateDto
+        {
+            StokId = s.StokId,
+            Miktar = (int)s.Miktar,
+            BirimFiyat = s.BirimF
+        }).ToList()
+    };
+    
+
+    try
+    {
+        Console.WriteLine($"Fatura kaydediliyor - CariId: {dto.CariId}, Satır Sayısı: {dto.Satirlar.Count}");
+        
+        var faturaId = await FaturaService.CreateAsync(dto);
+        
+        Console.WriteLine($"Fatura başarıyla kaydedildi - ID: {faturaId}");
+        ShowToast($"Fatura başarıyla oluşturuldu (ID: {faturaId})", isError: false);
+        
+        FaturaSatirlari.Clear();
+        selectedCariId = null;
+        CariUnvani = "";
+        FaturaTarihi = DateTime.Now;
+        
+        await InvokeAsync(StateHasChanged);
+        await OnSaved.InvokeAsync();
+    }
+    catch (HttpRequestException httpEx)
+    {
+        Console.WriteLine($"HTTP Hatası: {httpEx.Message}");
+        ShowToast($"Bağlantı hatası: {httpEx.Message}");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Genel Hata: {ex.Message}");
+        Console.WriteLine($"Stack Trace: {ex.StackTrace}");
+        ShowToast($"Fatura kaydında hata: {ex.Message}");
+    }
+}
+    class FaturaSatir
+    {
+        public int Satir { get; set; }
+        public int StokId { get; set; }
+        public string Kod { get; set; }
+        public string Adi { get; set; }
+        public decimal Miktar { get; set; }
+        public string Birim { get; set; }
+        public decimal BirimF { get; set; }
+        public string Iskonto { get; set; }
+        public string IskontoAdi { get; set; }
+        public string Tevkifat { get; set; }
+        public string TevkifatKodu { get; set; }
+        public string TevkifatAdi { get; set; }
+        public decimal TevkifatTutar { get; set; }
+        public string Para { get; set; }
+        public decimal Isk1 { get; set; }
+        public decimal Isk2 { get; set; }
+        public decimal Kdv { get; set; }
+        public decimal KdvMa { get; set; }
+        public decimal KdvTutar { get; set; }
+        public decimal NetBirimF { get; set; }
+        public decimal Tutar { get; set; }
+        public string Yere { get; set; }
+        public decimal YerelTut { get; set; }
+    }
+}

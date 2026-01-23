@@ -1,0 +1,188 @@
+.modal-container {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+    }
+
+    .content-wrapper {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .toolbar {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .bottom-toolbar {
+        display: none;
+        justify-content: flex-end;
+        border-top: 1px solid #dee2e6;
+        padding: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .bottom-toolbar-button {
+        min-width: 80px;
+        padding: 0.5rem;
+    }
+
+    .custom-vertical-button {
+        min-width: 80px;
+        padding: 0.5rem;
+    }
+
+    .floating-save-btn {
+        display: none;
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+    }
+
+    .code-input-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .code-input {
+        flex: 1;
+    }
+
+    .code-generate-btn {
+        white-space: nowrap;
+    }
+
+    .button-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-middle {
+        border-left: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+        padding: 0 1rem;
+    }
+
+    .icon-large {
+        font-size: 1.5rem;
+    }
+
+    .button-text {
+        margin-top: 0.25rem;
+        font-size: 0.85rem;
+    }
+
+    .info-card {
+        margin-bottom: 1rem;
+        border: none;
+    }
+
+    .info-card-body {
+        padding: 1rem;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .input-group-wrapper {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        gap: 1rem;
+    }
+
+    .input-group {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tabs-card {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+    }
+
+    .tabs-card-body {
+        padding: 0;
+    }
+
+    .tab-content {
+        padding: 1rem;
+    }
+
+    .section-header {
+        font-weight: bold;
+        font-size: 1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .general-content {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+        width: 100%;
+        gap: 2rem;
+    }
+
+    .ozel-kod-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .ozel-kod-row .dxbl-textbox {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ozel-kod-row .dxbl-btn {
+        white-space: nowrap;
+    }
+
+    @media (max-width: 1199px) {
+
+        .toolbar {
+            display: flex;
+        }
+
+        .bottom-toolbar {
+            display: flex;
+        }
+
+        .general-content {
+            flex-direction: column;
+        }
+
+        .input-group-wrapper {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .input-group-wrapper {
+            flex-direction: column;
+        }
+
+        .info-card-body {
+            display: flex;
+            flex-direction: column;
+        }
+    }

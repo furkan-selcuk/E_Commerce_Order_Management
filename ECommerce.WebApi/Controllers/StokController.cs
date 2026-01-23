@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 namespace ECommerce.WebApi.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class StokController : ControllerBase
@@ -37,6 +37,15 @@ namespace ECommerce.WebApi.Controllers
         {
             await _stokService.UpdateAsync(dto);
             return Ok();
+        }
+
+        // tek bir stoğu getirir
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var result = await _stokService.GetByIdAsync(id);
+            if (result == null) return NotFound();
+            return Ok(result);
         }
 
         // stok siler

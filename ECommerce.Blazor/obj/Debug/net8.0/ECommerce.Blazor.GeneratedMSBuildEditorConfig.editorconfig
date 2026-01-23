@@ -1,0 +1,91 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = ECommerce.Blazor
+build_property.RootNamespace = ECommerce.Blazor
+build_property.ProjectDir = C:\Users\Hp\Desktop\ECommerce\ecommerce.blazor\
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = C:\Users\Hp\Desktop\ECommerce\ecommerce.blazor
+build_property._RazorSourceGeneratorDebug = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/App.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xBcHAucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Controls/Modal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xDb250cm9sc1xNb2RhbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Layout/LoginLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTG9naW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Error.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Fatura/FaturaSatirListesi.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYXR1cmFcRmF0dXJhU2F0aXJMaXN0ZXNpLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Home/Home.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lXEhvbWUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Stok/StokEditModal.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdG9rXFN0b2tFZGl0TW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Routes.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xSb3V0ZXMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xfSW1wb3J0cy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Layout/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTWFpbkxheW91dC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-yof3n7o9tf
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Layout/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTmF2TWVudS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-monuq2ljl5
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Auth/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xBdXRoXExvZ2luLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-6e1b29pixh
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Cari/Cari.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYXJpXENhcmkucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-hsigtp3znx
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Cari/CariEkle.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYXJpXENhcmlFa2xlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-r22i1bwdue
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Fatura/Fatura.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYXR1cmFcRmF0dXJhLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-pevg74r1hs
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Fatura/FaturaEkle.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYXR1cmFcRmF0dXJhRWtsZS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = b-cro6ligint
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Stok/Stok.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdG9rXFN0b2sucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-syl4ltfevc
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Stok/StokEkle.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdG9rXFN0b2tFa2xlLnJhem9y
+build_metadata.AdditionalFiles.CssScope = b-uqxb4yr90z

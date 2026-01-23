@@ -1,0 +1,69 @@
+@using DevExpress.Blazor
+@using ECommerce.Blazor.Services
+@using ECommerce.Blazor.Models
+@inject FaturaService FaturaService
+
+@if (satirlar == null)
+{
+    <div class="d-flex align-items-center p-3">
+        <div class="spinner-border spinner-border-sm text-primary me-2" role="status"></div>
+        <span>Yükleniyor...</span>
+    </div>
+}
+else if (!satirlar.Any())
+{
+    <div class="alert alert-info m-2">
+        Bu faturaya ait satır bulunamadı.
+    </div>
+}
+else
+{
+    <div class="satir-grid-container">
+        <DxGrid Data="@satirlar" CssClass="detail-grid">
+            <Columns>
+                <DxGridDataColumn Caption="Stok Adı" FieldName="StokAdi" Width="200px" />
+                <DxGridDataColumn Caption="Miktar" FieldName="Miktar" Width="120px" />
+                <DxGridDataColumn Caption="Birim Fiyat" FieldName="BirimFiyat" Width="150px" DisplayFormat="C2" />
+                <DxGridDataColumn Caption="Toplam Tutar" FieldName="Tutar" Width="150px" DisplayFormat="C2">
+                    <CellDisplayTemplate>
+                        <span class="satir-total">@context.DisplayText</span>
+                    </CellDisplayTemplate>
+                </DxGridDataColumn>
+            </Columns>
+        </DxGrid>
+    </div>
+}
+
+<style>
+    .satir-grid-container {
+        border: 1px solid #e2e8f0;
+        border-radius: 0.5rem;
+        overflow: hidden;
+        background: white;
+    }
+
+    .satir-total {
+        font-weight: 600;
+        color: #4f46e5;
+    }
+
+    ::deep .detail-grid .dxbl-grid-header-row {
+        background-color: #f8fafc !important;
+        font-size: 0.7rem !important;
+    }
+
+    ::deep .detail-grid .dxbl-grid-data-cell {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.85rem !important;
+    }
+</style>
+
+@code {
+    [Parameter] public int FaturaId { get; set; }
+    private List<ECommerce.Blazor.Models.FaturaSatirListDto>? satirlar;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        satirlar = await FaturaService.GetSatirlarAsync(FaturaId);
+    }
+}

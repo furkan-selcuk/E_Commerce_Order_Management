@@ -1,0 +1,41 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\Hp\\Desktop\\ECommerce\\ecommerce.blazor\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ECommerce.Blazor.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ECommerce.Blazor.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\Hp\\Desktop\\ECommerce\\ecommerce.blazor\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\Hp\\Desktop\\ECommerce\\ecommerce.blazor\\wwwroot\\bootstrap\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\Hp\\Desktop\\ECommerce\\ecommerce.blazor\\wwwroot\\bootstrap\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\bootstrap\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\Hp\\Desktop\\ECommerce\\ecommerce.blazor\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ECommerce.Blazor.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ECommerce.Blazor.props",
+      "PackagePath": "build\\ECommerce.Blazor.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ECommerce.Blazor.props",
+      "PackagePath": "buildMultiTargeting\\ECommerce.Blazor.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ECommerce.Blazor.props",
+      "PackagePath": "buildTransitive\\ECommerce.Blazor.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

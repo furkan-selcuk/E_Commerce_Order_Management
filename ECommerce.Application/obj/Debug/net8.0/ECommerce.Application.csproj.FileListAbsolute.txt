@@ -14,3 +14,19 @@ C:\Users\Hp\Desktop\New folder\ECommerce.Application\obj\Debug\net8.0\ECommerce.
 C:\Users\Hp\Desktop\New folder\ECommerce.Application\obj\Debug\net8.0\refint\ECommerce.Application.dll
 C:\Users\Hp\Desktop\New folder\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.pdb
 C:\Users\Hp\Desktop\New folder\ECommerce.Application\obj\Debug\net8.0\ref\ECommerce.Application.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\bin\Debug\net8.0\ECommerce.Application.deps.json
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\bin\Debug\net8.0\ECommerce.Application.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\bin\Debug\net8.0\ECommerce.Application.pdb
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\bin\Debug\net8.0\ECommerce.Domain.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\bin\Debug\net8.0\ECommerce.Domain.pdb
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.csproj.AssemblyReference.cache
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.AssemblyInfoInputs.cache
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.AssemblyInfo.cs
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.csproj.CoreCompileInputs.cache
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.sourcelink.json
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerc.670E0CBE.Up2Date
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\refint\ECommerce.Application.dll
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ECommerce.Application.pdb
+C:\Users\Hp\Desktop\ECommerce\ECommerce.Application\obj\Debug\net8.0\ref\ECommerce.Application.dll

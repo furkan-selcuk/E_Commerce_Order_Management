@@ -1,0 +1,167 @@
+@page "/cari"
+@using DevExpress.Blazor
+@using ECommerce.Blazor.Services
+@using ECommerce.Blazor.Models
+@using ECommerce.Blazor.Components.Controls
+@inject CariService CariService
+
+<div class="cari-container">
+    <div class="cari-header">
+        <h3 class="cari-title">Cari Listesi</h3>
+        <button class="btn-primary" @onclick="AddNewCari">
+            <i class="bi bi-plus-lg icon-spacing"></i> Yeni Cari Ekle
+        </button>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <!-- Desktop / Tablet: orijinal grid (md ve üzeri görünür) -->
+            <div class="desktop-grid">
+                <DxGrid Data="@CariListesi"
+                        CssClass="w-100"
+                        PageSize="15"
+                        PagerPosition="GridPagerPosition.Bottom"
+                        ShowFilterRow="true"
+                        AutoCollapseDetailRow="true">
+                    <Columns>
+                        <DxGridDataColumn Caption="Kodu" FieldName="CariKodu" Width="120px" />
+                        <DxGridDataColumn Caption="Ünvan" FieldName="CariAdi" Width="200px" />
+                        <DxGridDataColumn Caption="Telefon" FieldName="Telefon" Width="150px" />
+                        <DxGridDataColumn Caption="E-Mail" FieldName="Email" Width="180px" />
+                        <DxGridDataColumn Caption="Vergi No" FieldName="VergiNo" Width="130px" />
+                        <DxGridDataColumn Caption="Adres" FieldName="Adres" />
+                        <DxGridDataColumn Caption="Kayıt Tarihi" FieldName="OlusturmaTarihi" Width="150px" DisplayFormat="d" />
+                        <DxGridDataColumn Caption="İşlemler" Width="120px" AllowSort="false" FilterRowEditorVisible="false">
+                            <CellDisplayTemplate>
+                                @{
+                                    var cari = (CariListDto)context.DataItem;
+                                }
+                                <div class="btn-actions">
+                                    <button class="btn-sm btn-outline-primary" @onclick="() => EditCari(cari.Id)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn-sm btn-outline-danger" @onclick="() => DeleteCari(cari.Id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+                            </CellDisplayTemplate>
+                        </DxGridDataColumn>
+                    </Columns>
+                </DxGrid>
+            </div>
+
+            <!-- Mobile: sade liste, yalnızca Ünvan + düzenle/sil + oka basınca detay -->
+            <div class="mobile-list">
+                @if (CariListesi != null && CariListesi.Any())
+                {
+                    foreach (var item in CariListesi)
+                    {
+                        <div class="mobile-card">
+                            <div class="mobile-card-body">
+                                <div class="mobile-card-content">
+                                    <div class="mobile-card-title">@item.CariAdi</div>
+                                    <div class="mobile-card-subtitle">@item.CariKodu</div>
+                                </div>
+
+                                <div class="mobile-actions">
+                                    <button class="btn-sm btn-outline-primary" @onclick="() => EditCari(item.Id)">
+                                        <i class="bi bi-pencil"></i>
+                                    </button>
+                                    <button class="btn-sm btn-outline-danger" @onclick="() => DeleteCari(item.Id)">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
+
+                                <button class="btn-sm btn-light" @onclick="() => ToggleExpand(item.Id)">
+                                    <i class="bi @(IsExpanded(item.Id) ? "bi-chevron-down" : "bi-chevron-right")"></i>
+                                </button>
+                            </div>
+
+                            @if (IsExpanded(item.Id))
+                            {
+                                <div class="mobile-detail">
+                                    <div><strong>Kodu:</strong> @item.CariKodu</div>
+                                    <div><strong>Telefon:</strong> @item.Telefon</div>
+                                    <div><strong>E-Mail:</strong> @item.Email</div>
+                                    <div><strong>Vergi No:</strong> @item.VergiNo</div>
+                                    <div class="address-block">
+                                        <strong>Adres:</strong>
+                                        <div class="text-muted">@item.Adres</div>
+                                    </div>
+                                    <div class="text-muted detail-spacing">Kayıt: @item.OlusturmaTarihi?.ToString("d")</div>
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="no-records">Kayıt bulunamadı.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (showModal)
+{
+    <Modal Title="@modalTitle" OnClose="CloseModal">
+        <CariEkle @key="editingCariId"
+                  CariId="@editingCariId"
+                  OnSaved="CloseModal" />
+    </Modal>
+}
+
+@code {
+    private List<CariListDto>? CariListesi;
+    private bool showModal = false;
+    private int? editingCariId;
+    private string modalTitle => editingCariId == null ? "Cari Ekle" : "Cari Güncelle";
+    private HashSet<int> expandedCariIds = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private void AddNewCari()
+    {
+        editingCariId = null;
+        showModal = true;
+    }
+
+    private void EditCari(int id)
+    {
+        Console.WriteLine($"[Cari.razor] EditCari called with id={id}");
+        editingCariId = id;
+        showModal = true;
+    }
+
+    private async Task DeleteCari(int id)
+    {
+        await CariService.DeleteAsync(id);
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        CariListesi = await CariService.GetAllAsync();
+    }
+
+    private void ToggleExpand(int id)
+    {
+        if (expandedCariIds.Contains(id))
+            expandedCariIds.Remove(id);
+        else
+            expandedCariIds.Add(id);
+    }
+
+    private bool IsExpanded(int id) => expandedCariIds.Contains(id);
+
+    private async Task CloseModal()
+    {
+        showModal = false;
+        editingCariId = null;
+        await LoadData();
+    }
+}

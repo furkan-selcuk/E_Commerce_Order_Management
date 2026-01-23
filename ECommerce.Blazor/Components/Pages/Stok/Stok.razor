@@ -1,0 +1,167 @@
+@page "/stok"
+@using DevExpress.Blazor
+@using ECommerce.Blazor.Services
+@using ECommerce.Blazor.Models
+@using ECommerce.Blazor.Components.Controls
+@inject StokService StokService
+
+<div class="stok-view-container">
+    <div class="stok-header">
+        <div class="header-left">
+            <h1 class="page-title">Stok Yönetimi</h1>
+            <p class="page-subtitle">Envanter ürünlerini izleyin ve yönetin</p>
+        </div>
+        <div class="header-right">
+            <button class="add-button" @onclick="OpenNewStok">
+                <i class="bi bi-plus-circle"></i>
+                <span>Yeni Stok Ekle</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="stok-content-card">
+        <div class="grid-wrapper">
+            <div class="desktop-view">
+                <DxGrid Data="@StokListesi"
+                        CssClass="custom-stok-grid"
+                        PageSize="12"
+                        ShowFilterRow="true"
+                        PagerPosition="GridPagerPosition.Bottom"
+                        ColumnResizeMode="GridColumnResizeMode.ColumnsContainer">
+                    <Columns>
+                        <DxGridDataColumn Caption="KOD" FieldName="StokKodu" Width="140px" />
+                        <DxGridDataColumn Caption="ÜRÜN ADI" FieldName="StokAdi" Width="250px" />
+                        <DxGridDataColumn Caption="BİRİM FİYAT" FieldName="BirimFiyat" Width="150px" DisplayFormat="C2" />
+                        <DxGridDataColumn Caption="STOK MİKTARI" FieldName="StokMiktar" Width="150px">
+                            <CellDisplayTemplate>
+                                @{
+                                    var miktar = (int)context.Value;
+                                    string badgeClass = "status-high";
+                                    if (miktar < 10) badgeClass = "status-low";
+                                    else if (miktar < 50) badgeClass = "status-medium";
+                                }
+                                <div class="stock-badge @badgeClass">
+                                    @miktar Adet
+                                </div>
+                            </CellDisplayTemplate>
+                        </DxGridDataColumn>
+                        <DxGridDataColumn Caption="İşlemler" FieldName="StokId" Width="180px">
+                            <CellDisplayTemplate>
+                                @{ var id = (int)context.Value; }
+                                <div style="display:flex;gap:8px;">
+                                    <button class="btn-edit" @onclick="() => EditStok(id)">Düzenle</button>
+                                    <button class="btn-delete" @onclick="() => DeleteStok(id)">Sil</button>
+                                </div>
+                            </CellDisplayTemplate>
+                        </DxGridDataColumn>
+                    </Columns>
+                </DxGrid>
+            </div>
+
+            <div class="mobile-view">
+                @if (StokListesi != null && StokListesi.Any())
+                {
+                    foreach (var item in StokListesi)
+                    {
+                        <div class="mobile-card">
+                            <div class="mobile-card-body">
+                                <div class="mobile-card-content">
+                                    <div class="mobile-card-title">@item.StokAdi</div>
+                                    <div class="mobile-card-subtitle">@item.StokKodu</div>
+                                </div>
+
+                                <div class="mobile-card-actions">
+                                    <button class="mobile-btn-edit" @onclick="() => EditStok(item.StokId)">Düzenle</button>
+                                    <button class="mobile-btn-delete" @onclick="() => DeleteStok(item.StokId)">Sil</button>
+                                </div>
+
+                                <button class="mobile-expand-btn" @onclick="() => ToggleExpand(item.StokId)">
+                                    <i class="bi @(IsExpanded(item.StokId) ? "bi-chevron-down" : "bi-chevron-right")"></i>
+                                </button>
+                            </div>
+
+                            @if (IsExpanded(item.StokId))
+                            {
+                                <div class="mobile-card-details">
+                                    <div><strong>Kod:</strong> @item.StokKodu</div>
+                                    <div><strong>Birim Fiyat:</strong> @((item.BirimFiyat).ToString("C2"))</div>
+                                    <div><strong>Stok Miktarı:</strong> @item.StokMiktar Adet</div>
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="mobile-empty-state">Kayıt bulunamadı.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (showModal)
+{
+    <Modal Title="Stok Ekle" OnClose="CloseModal">
+        @if (editingStokId.HasValue)
+        {
+            <StokEditModal StokId="@editingStokId.Value" OnSaved="CloseModal" />
+        }
+        else
+        {
+            <StokEkle OnSaved="CloseModal" />
+        }
+    </Modal>
+}
+
+
+@code {
+    private List<StokListDto>? StokListesi;
+    private bool showModal = false;
+    private int? editingStokId;
+    private HashSet<int> expandedStokIds = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        StokListesi = await StokService.GetAllAsync();
+    }
+
+    private async Task CloseModal()
+    {
+        showModal = false;
+        await LoadData();
+    }
+
+    private async Task EditStok(int id)
+    {
+        editingStokId = id;
+        showModal = true;
+    }
+
+    private void OpenNewStok()
+    {
+        editingStokId = null;
+        showModal = true;
+    }
+
+    private async Task DeleteStok(int id)
+    {
+        await StokService.DeleteAsync(id);
+        await LoadData();
+    }
+
+    private void ToggleExpand(int id)
+    {
+        if (expandedStokIds.Contains(id))
+            expandedStokIds.Remove(id);
+        else
+            expandedStokIds.Add(id);
+    }
+
+    private bool IsExpanded(int id) => expandedStokIds.Contains(id);
+}

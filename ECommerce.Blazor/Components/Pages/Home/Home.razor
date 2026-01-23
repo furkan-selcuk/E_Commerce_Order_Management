@@ -1,0 +1,44 @@
+﻿@page "/"
+@using ECommerce.Blazor.Services
+@inject ViewService ViewService
+@implements IDisposable
+
+<PageTitle>Ana Sayfa</PageTitle>
+
+@if (ViewService.ActiveView == "Home")
+{
+    <h1>Gensoft'a Hoş Geldiniz!</h1>
+    <p>Sol taraftaki menüyü kullanarak işlemlerinizi yapabilirsiniz.</p>
+
+}
+else if (ViewService.ActiveView == "Cari")
+{
+    <Cari />
+}
+else if (ViewService.ActiveView == "Stok")
+{
+    <Stok />
+}
+else if (ViewService.ActiveView == "Fatura")
+{
+    <Fatura />
+}
+
+@inject NavigationManager Navigation
+@inject ECommerce.Blazor.Services.ApiClient ApiClient
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (!ApiClient.HasToken())
+        {
+            Navigation.NavigateTo("/login");
+        }
+        ViewService.OnChange += StateHasChanged;
+    }
+
+    public void Dispose()
+    {
+        ViewService.OnChange -= StateHasChanged;
+    }
+}

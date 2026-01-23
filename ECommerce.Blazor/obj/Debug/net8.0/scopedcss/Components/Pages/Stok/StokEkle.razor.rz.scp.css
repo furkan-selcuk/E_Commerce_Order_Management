@@ -1,0 +1,188 @@
+.modal-container[b-uqxb4yr90z] {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        position: relative;
+    }
+
+    .content-wrapper[b-uqxb4yr90z] {
+        flex: 1;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .toolbar[b-uqxb4yr90z] {
+        display: flex;
+        justify-content: flex-start;
+        margin-bottom: 0.5rem;
+        border-bottom: 1px solid #dee2e6;
+        padding: 0 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .bottom-toolbar[b-uqxb4yr90z] {
+        display: none;
+        justify-content: flex-end;
+        border-top: 1px solid #dee2e6;
+        padding: 0.5rem;
+        flex-shrink: 0;
+    }
+
+    .bottom-toolbar-button[b-uqxb4yr90z] {
+        min-width: 80px;
+        padding: 0.5rem;
+    }
+
+    .custom-vertical-button[b-uqxb4yr90z] {
+        min-width: 80px;
+        padding: 0.5rem;
+    }
+
+    .floating-save-btn[b-uqxb4yr90z] {
+        display: none;
+        position: absolute;
+        bottom: 2rem;
+        right: 2rem;
+        z-index: 1000;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        border-radius: 50%;
+    }
+
+    .code-input-wrapper[b-uqxb4yr90z] {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        width: 100%;
+    }
+
+    .code-input[b-uqxb4yr90z] {
+        flex: 1;
+    }
+
+    .code-generate-btn[b-uqxb4yr90z] {
+        white-space: nowrap;
+    }
+
+    .button-content[b-uqxb4yr90z] {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-middle[b-uqxb4yr90z] {
+        border-left: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+        padding: 0 1rem;
+    }
+
+    .icon-large[b-uqxb4yr90z] {
+        font-size: 1.5rem;
+    }
+
+    .button-text[b-uqxb4yr90z] {
+        margin-top: 0.25rem;
+        font-size: 0.85rem;
+    }
+
+    .info-card[b-uqxb4yr90z] {
+        margin-bottom: 1rem;
+        border: none;
+    }
+
+    .info-card-body[b-uqxb4yr90z] {
+        padding: 1rem;
+        display: flex;
+        flex-direction: row;
+    }
+
+    .input-group-wrapper[b-uqxb4yr90z] {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+        gap: 1rem;
+    }
+
+    .input-group[b-uqxb4yr90z] {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .tabs-card[b-uqxb4yr90z] {
+        border: 1px solid #dee2e6;
+        border-radius: 0.25rem;
+    }
+
+    .tabs-card-body[b-uqxb4yr90z] {
+        padding: 0;
+    }
+
+    .tab-content[b-uqxb4yr90z] {
+        padding: 1rem;
+    }
+
+    .section-header[b-uqxb4yr90z] {
+        font-weight: bold;
+        font-size: 1rem;
+        margin-top: 1.5rem;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #dee2e6;
+    }
+
+    .general-content[b-uqxb4yr90z] {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: flex-start;
+        opacity: 1;
+        transition: opacity 0.3s ease-in-out;
+        width: 100%;
+        gap: 2rem;
+    }
+
+    .ozel-kod-row[b-uqxb4yr90z] {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        width: 100%;
+    }
+
+    .ozel-kod-row .dxbl-textbox[b-uqxb4yr90z] {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ozel-kod-row .dxbl-btn[b-uqxb4yr90z] {
+        white-space: nowrap;
+    }
+
+    @media (max-width: 1199px) {
+
+        .toolbar[b-uqxb4yr90z] {
+            display: flex;
+        }
+
+        .bottom-toolbar[b-uqxb4yr90z] {
+            display: flex;
+        }
+
+        .general-content[b-uqxb4yr90z] {
+            flex-direction: column;
+        }
+
+        .input-group-wrapper[b-uqxb4yr90z] {
+            width: 100%;
+        }
+    }
+
+    @media (max-width: 768px) {
+        .input-group-wrapper[b-uqxb4yr90z] {
+            flex-direction: column;
+        }
+
+        .info-card-body[b-uqxb4yr90z] {
+            display: flex;
+            flex-direction: column;
+        }
+    }

@@ -31,9 +31,10 @@ namespace ECommerce.DataAccess.Repositories
         public async Task<IEnumerable<FaturaSatir>> GetByFaturaIdAsync(int faturaId)
         {
             var sql = @"
-                SELECT *
-                FROM FaturaSatirlari
-                WHERE FaturaId = @FaturaId
+                SELECT fs.*, s.StokAdi
+                FROM FaturaSatirlari fs
+                LEFT JOIN Stok s ON s.StokId = fs.StokId
+                WHERE fs.FaturaId = @FaturaId
             ";
 
             using var connection = _context.CreateConnection();

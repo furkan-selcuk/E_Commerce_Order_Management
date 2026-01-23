@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace ECommerce.WebApi.Controllers
 {
-    [Authorize]
+    // [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class CariController : ControllerBase
@@ -23,6 +23,14 @@ namespace ECommerce.WebApi.Controllers
             var result = await _cariService.GetAllAsync();
             return Ok(result);
         }
+        // tek bir cariyi getirir
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var result = await _cariService.GetByIdAsync(id);
+            return Ok(result);
+        }
+
         // cari ekler
         [HttpPost]
         public async Task<IActionResult> Create(CariCreateDto dto)
@@ -31,9 +39,14 @@ namespace ECommerce.WebApi.Controllers
             return Ok();
         }
         //cari günceller
-        [HttpPut]
-        public async Task<IActionResult> Update(CariUpdateDto dto)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(int id, [FromBody] CariUpdateDto dto)
         {
+            if (dto == null) return BadRequest();
+            if (id != dto.Id) return BadRequest("Route id and body CariId must match.");
+
+            Console.WriteLine($"[CariController] Update called for CariId={dto.Id}, CariKodu={dto.CariKodu}");
+
             await _cariService.UpdateAsync(dto);
             return Ok();
         }

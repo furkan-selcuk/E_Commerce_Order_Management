@@ -1,0 +1,611 @@
+@using DevExpress.Blazor
+@using ECommerce.Blazor.Services
+@using ECommerce.Blazor.Models
+@inject StokService StokService
+
+<div class="modal-container">
+    <!-- 1. En Üst: Kaydet Butonu  -->
+    <div class="toolbar">
+        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="button-content button-middle">
+                    <i class="bi bi-floppy icon-large"></i>
+                    <span class="button-text">Kaydet</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="button-content ">
+                    <i class="bi bi-plus icon-large"></i>
+                    <span class="button-text">Ekle</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="button-content button-middle">
+                    <i class="bi bi-tag icon-large"></i>
+                    <span class="button-text">Fiyatlar</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="button-content">
+                    <i class="bi bi-printer icon-large"></i>
+                    <span class="button-text">Yazdır</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="button-content button-middle">
+                    <i class="bi bi-file-earmark-arrow-down icon-large"></i>
+                    <span class="button-text">Diğer</span>
+                </div>
+            </Content>
+        </DxButton>
+        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="button-content">
+                    <i class="bi bi-box-arrow-right icon-large"></i>
+                    <span class="button-text">Kapat</span>
+                </div>
+            </Content>
+        </DxButton>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- 2. Kod ve Ünvan Alanları -->
+        <div class="info-card">
+            <div class="info-card-body">
+                <DxFormLayout>
+                    <DxFormLayoutItem Caption="Stok Kodu:" ColSpanMd="8">
+                        <div class="code-input-wrapper">
+                            <DxTextBox @bind-Text="@StokKodu" NullText="Stok kodu giriniz..." CssClass="code-input" />
+
+                            <DxButton Text="Kod Üret" IconCssClass="bi bi-arrow-clockwise" CssClass="code-generate-btn"
+                                RenderStyle="ButtonRenderStyle.Secondary" BackgroundColor="#ffffff"
+                                SizeMode="SizeMode.Medium" ColSpanMd="6" />
+                        </div>
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Ünvanı (adı soyadı):" ColSpanMd="8">
+                        <DxTextBox @bind-Text="@StokUnvani" NullText="Stok ünvanı giriniz..." />
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+                <DxFormLayout>
+                    <DxFormLayoutItem Caption="Pasif:" ColSpanMd="7">
+                        <DxCheckBox @bind-Checked="@StokPasif" Text="Pasif" />
+                    </DxFormLayoutItem>
+                    <DxFormLayoutItem Caption="Stok Tipi:" ColSpanMd="7">
+                        <DxComboBox Data="@StokTipiListesi" @bind-Value="@StokTipi" NullText="Stok tipi seçiniz..."
+                            AllowUserInput="false" ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                    </DxFormLayoutItem>
+                </DxFormLayout>
+
+            </div>
+        </div>
+
+        <!-- 3. Nav Bar (Sekmeler) -->
+        <div class="tabs-card">
+            <div class="tabs-card-body">
+                <DxTabs @bind-ActiveTabIndex="@ActiveTabIndex">
+                    <DxTab Text="Genel Bilgiler" />
+                    <DxTab Text="Diğer bilgiler" />
+                </DxTabs>
+
+                <!-- 4. Main Bölüm (Sekme İçerikleri) -->
+                <div class="tab-content">
+                    @if (ActiveTabIndex == 0)
+                    {
+                        <div class="general-content">
+
+                            <!-- SOL BLOK -->
+                            <div class="input-group-wrapper">
+
+                                <!-- KDV BİLGİLERİ -->
+                                <div class="input-group">
+                                    <div class="section-header">KDV BİLGİLERİ</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Toptan:" ColSpanMd="12">
+                                            <DxTextBox @bind-Text="@ToptanKdv" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Perakende:" ColSpanMd="12">
+                                            <DxTextBox @bind-Text="@PerakendeKdv" />
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+                                </div>
+
+                                <!-- STOK TAKİBİ -->
+                                <div class="input-group">
+                                    <div class="section-header">STOK TAKİBİ</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="İzleme Yöntemi:" ColSpanMd="6">
+                                            <DxComboBox Data="@IzlemeYontemiListesi" @bind-Value="@IzlemeYontemi"
+                                                NullText="İzleme yöntemi seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Stok miktarı:" ColSpanMd="12">
+                                            <DxTextBox @bind-Text="@StokMiktar" />
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+                                </div>
+                                <!-- ÖZEL KODLAR -->
+                                <div class="input-group">
+                                    <div class="section-header">ÖZEL KODLAR</div>
+
+                                    <DxFormLayout>
+                                        @for (int i = 1; i <= 10; i++)
+                                        {
+                                            <DxFormLayoutItem Caption="@($"{i}. Özel Kod")" ColSpanMd="12">
+                                                <div class="ozel-kod-row">
+                                                    <DxTextBox />
+
+                                                    <DxButton Text="SİL" RenderStyle="ButtonRenderStyle.Secondary"
+                                                        SizeMode="SizeMode.Small" />
+
+                                                    <DxButton Text="SEÇ" RenderStyle="ButtonRenderStyle.Secondary"
+                                                        SizeMode="SizeMode.Small" />
+                                                </div>
+                                            </DxFormLayoutItem>
+                                        }
+                                    </DxFormLayout>
+                                </div>
+
+                            </div>
+                            <div class="input-group-wrapper">
+                                <!-- İSKONTOLAR -->
+                                <div class="input-group">
+                                    <div class="section-header">İSKONTOLAR</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Satış İskonto 1 (%):" ColSpanMd="12">
+                                            <DxTextBox />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Alış İskonto 1 (%):" ColSpanMd="12">
+                                            <DxTextBox />
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+                                </div>
+
+                                <!-- NİTELİKLER -->
+                                <div class="input-group">
+                                    <div class="section-header">NİTELİKLER</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Marka:" ColSpanMd="12">
+                                            <DxTextBox />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Üretici:" ColSpanMd="12">
+                                            <DxTextBox />
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+                                </div>
+                                <div class="input-group">
+                                    <div class="section-header">SAYISAL ALANLAR</div>
+                                    <DxFormLayout>
+                                        @for (int i = 1; i <= 10; i++)
+                                        {
+                                            <DxFormLayoutItem Caption="@($"{i}. Sayısal")" ColSpanMd="12">
+                                                <DxTextBox />
+                                            </DxFormLayoutItem>
+                                        }
+                                    </DxFormLayout>
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                    }
+                    else if (ActiveTabIndex == 1)
+                    {
+                        <div class="general-content">
+                            <div class="input-group-wrapper">
+                                <div class="input-group">
+                                    <div class="section-header">Otomatik satış fiyatı hesaplama</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Otomatik satış fiyatı:" ColSpanMd="12">
+                                            <DxComboBox Data="@SatisFiyatListesi" @bind-Value="@OtomatikSatisFiyatiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+
+                                        <DxFormLayoutItem Caption="Hesaplama tipi:" ColSpanMd="12">
+                                            <DxComboBox Data="@HesaplamaTipiListesi" @bind-Value="@HesaplamaTipiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@KarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+                                </div>
+                                <div class="input-group">
+                                    <div class="section-header">Tevkifat</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Tevkifat uygulansın:" ColSpanMd="12">
+                                            <DxCheckBox @bind-Checked="@BorcBakiyesiGosterme" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Satış pay/payda:" ColSpanMd="12">
+                                            <div class="ozel-kod-row">
+                                                <DxTextBox @bind-Text="@SatisPayPayda" NullText="" />
+                                                <DxTextBox @bind-Text="@SatisPayPayda" NullText="" />
+                                            </div>
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Satın alma pay/payda:" ColSpanMd="12">
+                                            <div class="ozel-kod-row">
+                                                <DxTextBox @bind-Text="@SatinalmaPayPayda" NullText="" />
+                                                <DxTextBox @bind-Text="@SatinalmaPayPayda" NullText="" />
+                                            </div>
+                                        </DxFormLayoutItem>
+
+                                    </DxFormLayout>
+                                </div>
+                                <div class="input-group">
+                                    <div class="section-header">Seviye bilgileri (Ana birim)</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Seviye kontrolü:" ColSpanMd="12">
+                                            <DxComboBox Data="@SeviyeKontrolListesi" @bind-Value="@SeviyeKontroluSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+
+                                        <DxFormLayoutItem Caption="Min. stok miktarı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@MinStokMiktariSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+
+                                        <DxFormLayoutItem Caption="Optimum stok miktarı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@OptimumStokMiktariSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+                                </div>
+                            </div>
+                            <div class="input-group-wrapper">
+                                <div class="input-group">
+                                    <div class="section-header">Girdi kalite kontrol</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Kalite kontrol tipi:" ColSpanMd="12">
+                                            <DxComboBox Data="@KaliteKontrolTipiListesi" @bind-Value="@GirdiKaliteKontrolTipiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kalite kontrol değeri:" ColSpanMd="12">
+
+                                            <DxTextBox @bind-Text="@KaliteKontrolDegeri" NullText="" />
+
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+
+                                </div>
+                                <div class="input-group">
+                                    <div class="section-header">Son kalite kontrol</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Kalite kontrol tipi:" ColSpanMd="12">
+                                            <DxComboBox Data="@KaliteKontrolTipiListesi" @bind-Value="@SonKaliteKontrolTipiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kalite kontrol değeri:" ColSpanMd="12">
+
+                                            <DxTextBox @bind-Text="@KaliteKontrolDegeri" NullText="" />
+
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+                                </div>
+                                <div class="input-group">
+                                    <div class="section-header">Maliyet</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Otomatik satış fiyatı:" ColSpanMd="12">
+                                            <DxComboBox Data="@SatisFiyatListesi" @bind-Value="@MaliyetOtomatikSatisFiyatiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+
+                                        <DxFormLayoutItem Caption="Hesaplama tipi:" ColSpanMd="12">
+                                            <DxComboBox Data="@HesaplamaTipiListesi" @bind-Value="@MaliyetHesaplamaTipiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@MaliyetKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                    </DxFormLayout>
+                                </div>
+
+                                <div class="input-group">
+                                    <div class="section-header">Kullanım yerleri</div>
+                                    <div class="general-content">
+                                        <DxFormLayout>
+                                            <DxFormLayoutItem Caption="Eticaret:" ColSpanMd="12">
+                                                <DxCheckBox @bind-Checked="@Eticaret" />
+                                            </DxFormLayoutItem>
+                                            <DxFormLayoutItem Caption="Tarım:" ColSpanMd="12">
+                                                <DxCheckBox @bind-Checked="@Tarim" />
+                                            </DxFormLayoutItem>
+                                            <DxFormLayoutItem Caption="Yakıt fişi:" ColSpanMd="12">
+                                                <DxCheckBox @bind-Checked="@YakitFisi" />
+                                            </DxFormLayoutItem>
+                                        </DxFormLayout>
+                                        <DxFormLayout>
+                                            <DxFormLayoutItem Caption="Üretim bordro:" ColSpanMd="12">
+                                                <DxCheckBox @bind-Checked="@UretimBordro" />
+                                            </DxFormLayoutItem>
+                                            <DxFormLayoutItem Caption="Araç sefer:" ColSpanMd="12">
+                                                <DxCheckBox @bind-Checked="@AracSefer" />
+                                            </DxFormLayoutItem>
+                                            <DxFormLayoutItem Caption="Hızlı satış:" ColSpanMd="12">
+                                                <DxCheckBox @bind-Checked="@HizliSatıs" />
+                                            </DxFormLayoutItem>
+                                        </DxFormLayout>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="input-group-wrapper">
+                                <div class="input-group">
+                                    <div class="section-header">Diğer</div>
+                                    <DxFormLayout>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kalite kontrol değeri:" ColSpanMd="12">
+
+                                            <DxTextBox @bind-Text="@KaliteKontrolDegeri" NullText="" />
+
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kalite kontrol değeri:" ColSpanMd="12">
+
+                                            <DxTextBox @bind-Text="@KaliteKontrolDegeri" NullText="" />
+
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Plasiyer:" ColSpanMd="12">
+                                            <div class="ozel-kod-row">
+                                                <DxTextBox @bind-Text="@Plasiyer" NullText="" />
+                                                <DxButton Text="SİL" RenderStyle="ButtonRenderStyle.Secondary"
+                                                    SizeMode="SizeMode.Small" />
+                                                <DxButton Text="SEÇ" RenderStyle="ButtonRenderStyle.Secondary"
+                                                    SizeMode="SizeMode.Small" />
+                                            </div>
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Plasiyer:" ColSpanMd="12">
+                                            <div class="ozel-kod-row">
+                                                <DxTextBox @bind-Text="@Plasiyer" NullText="" />
+                                                <DxButton Text="SİL" RenderStyle="ButtonRenderStyle.Secondary"
+                                                    SizeMode="SizeMode.Small" />
+                                                <DxButton Text="SEÇ" RenderStyle="ButtonRenderStyle.Secondary"
+                                                    SizeMode="SizeMode.Small" />
+                                            </div>
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kalite kontrol değeri:" ColSpanMd="12">
+
+                                            <DxTextBox @bind-Text="@KaliteKontrolDegeri" NullText="" />
+
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kalite kontrol değeri:" ColSpanMd="12">
+
+                                            <DxTextBox @bind-Text="@KaliteKontrolDegeri" NullText="" />
+
+                                        </DxFormLayoutItem>
+                                        <DxFormLayoutItem Caption="Kar marjı:" ColSpanMd="12">
+                                            <DxComboBox Data="@KarMarjiListesi" @bind-Value="@DigerKarMarjiSecimi"
+                                                NullText="Seçiniz..." AllowUserInput="false"
+                                                ClearButtonDisplayMode="DataEditorClearButtonDisplayMode.Auto" />
+                                        </DxFormLayoutItem>
+
+                                    </DxFormLayout>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- Floating Save Button (Mobil için) - Content wrapper içinde -->
+    <div class="floating-save-btn">
+        <DxButton Click="HandleSave" RenderStyle="ButtonRenderStyle.Primary" SizeMode="SizeMode.Large"
+            IconCssClass="bi bi-floppy">
+        </DxButton>
+    </div>
+
+    <!-- Bottom Toolbar (Mobil için görünür) -->
+    <div class="bottom-toolbar">
+        <DxButton Click="HandleSave" CssClass="bottom-toolbar-button" RenderStyle="ButtonRenderStyle.None"
+            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+            <Content>
+                <div class="button-content">
+                    <i class="bi bi-floppy icon-large"></i>
+                    <span class="button-text">Kaydet</span>
+                </div>
+            </Content>
+        </DxButton>
+    </div>
+</div>
+
+@code {
+    string StokKodu { get; set; } = "";
+    int ActiveTabIndex { get; set; } = 0;
+    bool StokPasif { get; set; } = false;
+    string StokTipi { get; set; } = "";
+    List<string> StokTipiListesi = new List<string> { "Ticari", "Bireysel", "Şahıs Şirketi", "Kamu" };
+    string StokUnvani { get; set; } = "";
+    decimal BirimFiyat { get; set; } = 0;
+    string StokMiktar { get; set; } = "0";
+    string IzlemeYontemi { get; set; } = "";
+    List<string> IzlemeYontemiListesi = new List<string> { "Ticari", "Bireysel", "Şahıs Şirketi", "Kamu" };
+    string SatisPayPayda { get; set; } = "";
+    string SatinalmaPayPayda { get; set; } = "";
+    string KaliteKontrolDegeri { get; set; } = "";
+    string ToptanKdv { get; set; } = "";
+    string PerakendeKdv { get; set; } = "";
+    bool Eticaret { get; set; } = false;
+    bool Tarim { get; set; } = false;
+    bool YakitFisi { get; set; } = false;
+    bool UretimBordro { get; set; } = false;
+    bool AracSefer { get; set; } = false;
+    bool HizliSatıs { get; set; } = false;
+
+    string VarsayilanParaBirimi { get; set; } = "";
+    bool BorcBakiyesiGosterme { get; set; } = false;
+    string Plasiyer { get; set; } = "";
+    List<string> ParaBirimiListesi = new List<string> { "TRY", "USD", "EUR", "GBP" };
+
+    List<string> SatisFiyatListesi = new() { "Fiyat 1", "Fiyat 2", "Fiyat 3" };
+    List<string> HesaplamaTipiListesi = new() { "Aritmetik Ortalama", "Ağırlıklı Ortalama", "Son Alış", "Maliyet" };
+    List<string> KarMarjiListesi = new() { "%10", "%20", "%30", "%50" };
+    List<string> SeviyeKontrolListesi = new() { "Yapılmasın", "Uyarı Ver", "Engelle" };
+    List<string> KaliteKontrolTipiListesi = new() { "Gözle Muayene", "Ölçüm", "Test" };
+
+    
+    string OtomatikSatisFiyatiSecimi { get; set; } = "";
+    string HesaplamaTipiSecimi { get; set; } = "";
+    string KarMarjiSecimi { get; set; } = "";
+    string SeviyeKontroluSecimi { get; set; } = "";
+    string MinStokMiktariSecimi { get; set; } = "";
+    string OptimumStokMiktariSecimi { get; set; } = "";
+    string GirdiKaliteKontrolTipiSecimi { get; set; } = "";
+    string SonKaliteKontrolTipiSecimi { get; set; } = "";
+    string MaliyetOtomatikSatisFiyatiSecimi { get; set; } = "";
+    string MaliyetHesaplamaTipiSecimi { get; set; } = "";
+    string MaliyetKarMarjiSecimi { get; set; } = "";
+    string DigerKarMarjiSecimi { get; set; } = "";
+
+    [Parameter] public int? StokId { get; set; }
+    [Parameter] public EventCallback OnSaved { get; set; }
+    [Parameter] public string? InitialStokAdi { get; set; }
+    [Parameter] public string? InitialStokKodu { get; set; }
+
+    private int? _loadedStokId;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (StokId != null)
+        {
+            if (_loadedStokId != StokId)
+            {
+                var stok = await StokService.GetByIdAsync(StokId.Value);
+                if (stok != null)
+                {
+                    StokKodu = stok.StokKodu ?? string.Empty;
+                    StokUnvani = stok.StokAdi ?? string.Empty;
+                    StokMiktar = stok.StokMiktar.ToString();
+                    BirimFiyat = stok.BirimFiyat;
+                }
+                _loadedStokId = StokId;
+            }
+        }
+        else
+        {
+            StokKodu = InitialStokKodu ?? string.Empty;
+            StokUnvani = InitialStokAdi ?? string.Empty;
+            StokMiktar = "0";
+            BirimFiyat = 0;
+            _loadedStokId = null;
+        }
+    }
+
+    async Task HandleSave()
+    {
+        int stokMiktarInt = 0;
+        int.TryParse(StokMiktar, out stokMiktarInt);
+
+        if (StokId == null)
+        {
+            var dto = new StokCreateDto
+            {
+                StokKodu = StokKodu,
+                StokAdi = StokUnvani,
+                StokMiktar = stokMiktarInt,
+                BirimFiyat = BirimFiyat
+            };
+
+            try
+            {
+                await StokService.AddAsync(dto);
+                await OnSaved.InvokeAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Hata: {ex.Message}");
+            }
+        }
+        else
+        {
+            var dto = new StokUpdateDto
+            {
+                StokId = StokId.Value,
+                StokKodu = StokKodu,
+                StokAdi = StokUnvani,
+                StokMiktar = stokMiktarInt,
+                BirimFiyat = BirimFiyat
+            };
+
+            try
+            {
+                await StokService.UpdateAsync(dto);
+                await OnSaved.InvokeAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Hata: {ex.Message}");
+            }
+        }
+    }
+}

@@ -28,59 +28,37 @@ namespace ECommerce.Application.Services
         // yeni fatura ekleme
         public async Task<int> CreateAsync(FaturaCreateDto dto)
         {
-            
             var cari = await _cariRepository.GetByIdAsync(dto.CariId);
             if (cari == null)
-                throw new BusinessException("seçilen cari bulunamadı");
+                throw new BusinessException("Seçilen cari bulunamadı");
 
             if (!dto.Satirlar.Any())
-                throw new BusinessException("Fatura enn az bir satır içermelidir");
-
-            decimal toplamTutar = 0;
+                throw new BusinessException("Fatura en az bir satır içermelidir");
 
             var fatura = new Fatura
             {
                 CariId = dto.CariId,
                 FaturaTarihi = dto.FaturaTarihi
             };
-            
-            var faturaId = await _faturaRepository.AddAsync(fatura);
 
-            foreach (var satirDto in dto.Satirlar)
+            var satirEntities = dto.Satirlar.Select(s => new FaturaSatir
             {
-                var stok = await _stokRepository.GetByIdAsync(satirDto.StokId);
-                if (stok == null)
-                    throw new BusinessException("Stok bulunamadı.");
+                StokId = s.StokId,
+                Miktar = s.Miktar,
+                BirimFiyat = s.BirimFiyat,
+                StokAdi = null
+            }).ToList();
 
-                if (stok.Miktar < satirDto.Miktar)
-                    throw new BusinessException($"{stok.Ad} için yeterli stok yok");
-
-                
-                stok.Miktar -= satirDto.Miktar;
-                await _stokRepository.UpdateAsync(stok);
-
-                var satirTutar = satirDto.Miktar * satirDto.BirimFiyat;
-                toplamTutar += satirTutar;
-
-                var faturaSatir = new FaturaSatir
-                {
-                    FaturaId = faturaId,
-                    StokId = satirDto.StokId,
-                    Miktar = satirDto.Miktar,
-                    BirimFiyat = satirDto.BirimFiyat,
-                    Tutar = satirTutar
-                };
-
-                await _faturaSatirRepository.AddAsync(faturaSatir);
+            try
+            {
+                return await _faturaRepository.AddWithSatirlarAsync(fatura, satirEntities);
             }
-
-            fatura.Id = faturaId;
-            fatura.ToplamTutar = toplamTutar;
-            await _faturaRepository.UpdateTotalAsync(faturaId, toplamTutar);
-
-            return faturaId;
+            catch (InvalidOperationException ex)
+            {
+                throw new BusinessException(ex.Message);
+            }
         }
-        // tüm faturaları listeler
+        // tüm faturaları listeleme
         public async Task<IEnumerable<FaturaListDto>> GetAllAsync()
         {
             var faturalar = await _faturaRepository.GetAllWithCariAsync();
@@ -91,6 +69,22 @@ namespace ECommerce.Application.Services
                 CariUnvan = f.CariUnvan,
                 FaturaTarihi = f.FaturaTarihi,
                 ToplamTutar = f.ToplamTutar
+            });
+        }
+        // fatura satırlarını listeleme
+        public async Task<IEnumerable<FaturaSatirListDto>> GetFaturaSatirlariAsync(int faturaId)
+        {
+            var satirlar = await _faturaSatirRepository.GetByFaturaIdAsync(faturaId);
+
+            return satirlar.Select(s => new FaturaSatirListDto
+            {
+                Id = s.Id,
+                FaturaId = s.FaturaId,
+                StokId = s.StokId,
+                StokAdi = s.StokAdi ?? "Bilinmeyen Stok",
+                Miktar = s.Miktar,
+                BirimFiyat = s.BirimFiyat,
+                Tutar = s.Tutar
             });
         }
     }

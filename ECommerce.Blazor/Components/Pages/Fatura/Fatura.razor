@@ -1,0 +1,145 @@
+@page "/fatura"
+@using DevExpress.Blazor
+@using ECommerce.Blazor.Services
+@using ECommerce.Blazor.Models
+@using ECommerce.Blazor.Components.Controls
+@inject FaturaService FaturaService
+
+<div class="fatura-view-container">
+    <div class="fatura-header">
+        <div class="header-left">
+            <h1 class="page-title">Fatura Yönetimi</h1>
+            <p class="page-subtitle">Sisteme kayıtlı tüm faturaları listeleyin ve detaylarını inceleyin</p>
+        </div>
+        <div class="header-right">
+            <button class="add-button" @onclick="() => showModal = true">
+                <i class="bi bi-plus-circle"></i>
+                <span>Yeni Fatura Ekle</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="fatura-content-card">
+        <div class="grid-wrapper">
+            <div class="desktop-grid">
+                <DxGrid Data="@FaturaListesi"
+                        CssClass="custom-fatura-grid"
+                        PageSize="15"
+                        ShowFilterRow="true"
+                        PagerPosition="GridPagerPosition.Bottom"
+                        ColumnResizeMode="GridColumnResizeMode.ColumnsContainer"
+                        AutoCollapseDetailRow="true">
+                    <Columns>
+                        <DxGridDataColumn Caption="İşlem" Width="100px" AllowSort="false" FilterRowEditorVisible="false">
+                            <CellDisplayTemplate>
+                                
+                            </CellDisplayTemplate>
+                        </DxGridDataColumn>
+                        <DxGridDataColumn Caption="Fatura No" FieldName="Id" Width="120px" />
+                        <DxGridDataColumn Caption="Cari Ünvan" FieldName="CariUnvan" Width="250px" />
+                        <DxGridDataColumn Caption="Fatura Tarihi" FieldName="FaturaTarihi" Width="180px" DisplayFormat="d" />
+                        <DxGridDataColumn Caption="Toplam Tutar" FieldName="ToplamTutar" Width="180px" DisplayFormat="C2">
+                            <CellDisplayTemplate>
+                                 <div class="amount-cell">
+                                    @context.DisplayText
+                                 </div>
+                            </CellDisplayTemplate>
+                        </DxGridDataColumn>
+                    </Columns>
+                    <DetailRowTemplate>
+                        @{
+                            var fatura = (ECommerce.Blazor.Models.FaturaListDto)context.DataItem;
+                        }
+                        <div class="detail-container">
+                            <h5 class="detail-title">Fatura Satırları (Fatura No: @fatura.Id)</h5>
+                            <FaturaSatirListesi FaturaId="@fatura.Id" />
+                        </div>
+                    </DetailRowTemplate>
+                </DxGrid>
+            </div>
+
+            <div class="mobile-list">
+                @if (FaturaListesi != null && FaturaListesi.Any())
+                {
+                    foreach (var item in FaturaListesi)
+                    {
+                        <div class="mobile-card">
+                            <div class="mobile-card-body">
+                                <div class="mobile-card-content">
+                                    <div class="mobile-card-title">@item.CariUnvan</div>
+                                    <div class="mobile-card-subtitle">Fatura No: @item.Id</div>
+                                </div>
+
+                                <div class="mobile-card-amount">
+                                    <div class="mobile-amount-value">@((item.ToplamTutar).ToString("C2"))</div>
+                                    <div class="mobile-amount-date">@item.FaturaTarihi.ToString("d")</div>
+                                </div>
+
+                                <div class="mobile-card-actions">
+                                    <button class="mobile-detail-btn" title="Detay" @onclick="() => ToggleExpand(item.Id)">
+                                        <i class="bi @(IsExpanded(item.Id) ? "bi-chevron-down" : "bi-chevron-right")"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            @if (IsExpanded(item.Id))
+                            {
+                                <div class="mobile-detail-section">
+                                    <h6 class="mobile-detail-heading">Fatura Satırları</h6>
+                                    <FaturaSatirListesi FaturaId="@item.Id" />
+                                </div>
+                            }
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="empty-state">Kayıt bulunamadı.</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (showModal)
+{
+    <Modal Title="Fatura Ekle" OnClose="CloseModal">
+        <FaturaEkle />
+    </Modal>
+}
+
+<style>
+    
+</style>
+
+@code {
+    private List<ECommerce.Blazor.Models.FaturaListDto>? FaturaListesi;
+    private bool showModal = false;
+    private HashSet<int> expandedFaturaIds = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadData();
+    }
+
+    private async Task LoadData()
+    {
+        FaturaListesi = await FaturaService.GetAllAsync();
+    }
+
+    private async Task CloseModal()
+    {
+        showModal = false;
+        await LoadData();
+    }
+
+    private void ToggleExpand(int id)
+    {
+        if (expandedFaturaIds.Contains(id))
+            expandedFaturaIds.Remove(id);
+        else
+            expandedFaturaIds.Add(id);
+    }
+
+    private bool IsExpanded(int id) => expandedFaturaIds.Contains(id);
+}

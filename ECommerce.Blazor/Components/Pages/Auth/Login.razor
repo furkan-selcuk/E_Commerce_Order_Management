@@ -1,0 +1,43 @@
+@page "/login"
+@layout Components.Layout.LoginLayout
+@inject NavigationManager Navigation
+@inject ECommerce.Blazor.Services.AuthService AuthService
+
+<div class="login-container">
+    <div class="login-card">
+        <h2>Giriş Yap</h2>
+        <div class="form-group">
+            <label>Kullanıcı Adı</label>
+            <input @bind="username" type="text" class="form-control" placeholder="admin" />
+        </div>
+        <div class="form-group">
+            <label>Şifre</label>
+            <input @bind="password" type="password" class="form-control" placeholder="****" />
+        </div>
+        @if (!string.IsNullOrEmpty(errorMessage))
+        {
+            <div class="text-danger mb-2">@errorMessage</div>
+        }
+        <button class="btn-login btn btn-primary" @onclick="HandleLogin">Giriş Yap</button>
+    </div>
+</div>
+
+@code {
+    private string username = string.Empty;
+    private string password = string.Empty;
+    private string? errorMessage;
+
+    private async Task HandleLogin()
+    {
+        errorMessage = null;
+        var ok = await AuthService.LoginAsync(username, password);
+        if (ok)
+        {
+            Navigation.NavigateTo("/");
+        }
+        else
+        {
+            errorMessage = "Giriş başarısız. Kullanıcı adı veya şifre hatalı.";
+        }
+    }
+}

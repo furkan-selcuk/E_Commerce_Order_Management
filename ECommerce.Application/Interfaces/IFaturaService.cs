@@ -6,5 +6,6 @@ namespace ECommerce.Application.Interfaces.Services
     {
         Task<int> CreateAsync(FaturaCreateDto dto);
         Task<IEnumerable<FaturaListDto>> GetAllAsync();
+        Task<IEnumerable<FaturaSatirListDto>> GetFaturaSatirlariAsync(int faturaId);
     }
 }

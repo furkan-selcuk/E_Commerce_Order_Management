@@ -1,0 +1,90 @@
+@using DevExpress.Blazor
+@using ECommerce.Blazor.Models
+@using ECommerce.Blazor.Services
+@inject StokService StokService
+
+<div>
+    <DxFormLayout>
+        <DxFormLayoutItem Caption="Stok Kodu:" ColSpanMd="12">
+            <DxTextBox @bind-Text="StokKodu" />
+        </DxFormLayoutItem>
+        <DxFormLayoutItem Caption="Stok Adı:" ColSpanMd="12">
+            <DxTextBox @bind-Text="StokUnvani" />
+        </DxFormLayoutItem>
+        <DxFormLayoutItem Caption="Stok Miktarı:" ColSpanMd="12">
+            <DxTextBox @bind-Text="StokMiktar" />
+        </DxFormLayoutItem>
+        <DxFormLayoutItem Caption="Birim Fiyat:" ColSpanMd="12">
+            <DxTextBox @bind-Text="BirimFiyat" />
+        </DxFormLayoutItem>
+    </DxFormLayout>
+
+    <div class="button-wrapper">
+        <DxButton Text="Kaydet" Click="HandleSave" RenderStyle="ButtonRenderStyle.Primary" />
+        <DxButton Text="İptal" Click="HandleCancel" RenderStyle="ButtonRenderStyle.Secondary" />
+    </div>
+</div>
+
+<style>
+    .button-wrapper {
+        display:flex;
+        gap:8px;
+        margin-top:12px;
+        justify-content:flex-end;
+    }
+</style>
+@code {
+    [Parameter] public int StokId { get; set; }
+    [Parameter] public EventCallback OnSaved { get; set; }
+    [Parameter] public EventCallback OnCancel { get; set; }
+
+    string StokKodu { get; set; } = string.Empty;
+    string StokUnvani { get; set; } = string.Empty;
+    string StokMiktar { get; set; } = "0";
+    string BirimFiyat { get; set; } = "0";
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var s = await StokService.GetByIdAsync(StokId);
+        if (s != null)
+        {
+            StokKodu = s.StokKodu ?? string.Empty;
+            StokUnvani = s.StokAdi;
+            StokMiktar = s.StokMiktar.ToString();
+            BirimFiyat = s.BirimFiyat.ToString("0.##");
+        }
+    }
+
+    async Task HandleSave()
+    {
+        int miktar = 0;
+        int.TryParse(StokMiktar, out miktar);
+
+        decimal birim = 0;
+        decimal.TryParse(BirimFiyat, out birim);
+
+        var dto = new StokUpdateDto
+        {
+            StokId = StokId,
+            StokKodu = StokKodu,
+            StokAdi = StokUnvani,
+            StokMiktar = miktar,
+            BirimFiyat = birim
+        };
+
+        try
+        {
+            await StokService.UpdateAsync(dto);
+            await OnSaved.InvokeAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Hata: {ex.Message}");
+        }
+    }
+
+    async Task HandleCancel()
+    {
+        await OnCancel.InvokeAsync();
+    }
+}

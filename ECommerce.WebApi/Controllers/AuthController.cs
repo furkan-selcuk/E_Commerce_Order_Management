@@ -20,7 +20,7 @@ namespace ECommerce.WebApi.Controllers
             if (username == "admin" && password == "1234")
             {
                 var token = _tokenService.CreateToken(username);
-                return Ok(new { token });
+                return Ok(new { Token = token });
             }
 
             return Unauthorized("Kullanıcı adı veya şifre hatalı");

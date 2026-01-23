@@ -1,0 +1,267 @@
+.stok-view-container {
+    --stok-primary: #6366f1;
+    --stok-primary-hover: #4f46e5;
+    --stok-bg: #f8fafc;
+    --stok-card-bg: #ffffff;
+    --stok-text-main: #1e293b;
+    --stok-text-muted: #64748b;
+    --stok-border: #e2e8f0;
+    --stok-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --status-high-bg: #dcfce7;
+    --status-high-text: #166534;
+    --status-medium-bg: #fef9c3;
+    --status-medium-text: #854d0e;
+    --status-low-bg: #fee2e2;
+    --status-low-text: #991b1b;
+}
+
+    .stok-view-container {
+        padding: 2rem;
+        background-color: var(--stok-bg);
+        min-height: calc(100vh - 60px);
+        font-family: 'Outfit', sans-serif;
+    }
+
+    .stok-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .page-title {
+        font-size: 1.875rem;
+        font-weight: 700;
+        color: var(--stok-text-main);
+        margin: 0;
+    }
+
+    .page-subtitle {
+        color: var(--stok-text-muted);
+        margin-top: 0.25rem;
+    }
+
+    .add-button {
+        background-color: var(--stok-primary);
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 0.75rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 600;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+    }
+
+    .add-button:hover {
+        background-color: var(--stok-primary-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
+    }
+
+    .stok-content-card {
+        background: var(--stok-card-bg);
+        border-radius: 1.25rem;
+        box-shadow: var(--stok-shadow);
+        border: 1px solid var(--stok-border);
+        overflow: hidden;
+    }
+
+    .grid-wrapper {
+        padding: 1rem;
+    }
+
+    .desktop-view {
+        display: none;
+    }
+
+    @media (min-width: 768px) {
+        .desktop-view {
+            display: block;
+        }
+    }
+
+    .mobile-view {
+        display: block;
+    }
+
+    @media (min-width: 768px) {
+        .mobile-view {
+            display: none;
+        }
+    }
+
+    .mobile-card {
+        background: white;
+        border: 1px solid var(--stok-border);
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+        overflow: hidden;
+    }
+
+    .mobile-card-body {
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    .mobile-card-content {
+        flex-grow: 1;
+        min-width: 0;
+    }
+
+    .mobile-card-title {
+        font-weight: 700;
+        color: var(--stok-text-main);
+        font-size: 0.95rem;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .mobile-card-subtitle {
+        color: var(--stok-text-muted);
+        font-size: 0.813rem;
+        margin-top: 0.125rem;
+    }
+
+    .mobile-card-actions {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        margin-right: 0.5rem;
+    }
+
+    .mobile-btn-edit,
+    .mobile-btn-delete {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        border-radius: 0.375rem;
+        border: 1px solid;
+        background: white;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
+
+    .mobile-btn-edit {
+        color: #3b82f6;
+        border-color: #3b82f6;
+    }
+
+    .mobile-btn-edit:hover {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .mobile-btn-delete {
+        color: #ef4444;
+        border-color: #ef4444;
+    }
+
+    .mobile-btn-delete:hover {
+        background-color: #ef4444;
+        color: white;
+    }
+
+    .mobile-expand-btn {
+        padding: 0.375rem 0.75rem;
+        font-size: 0.875rem;
+        border-radius: 0.375rem;
+        border: 1px solid var(--stok-border);
+        background: #f8fafc;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+    }
+
+    .mobile-expand-btn:hover {
+        background-color: #e2e8f0;
+    }
+
+    .mobile-card-details {
+        padding: 0.5rem;
+        border-top: 1px solid var(--stok-border);
+        font-size: 0.875rem;
+        background-color: #f8fafc;
+    }
+
+    .mobile-card-details > div {
+        margin-bottom: 0.375rem;
+    }
+
+    .mobile-card-details > div:last-child {
+        margin-bottom: 0;
+    }
+
+    .mobile-empty-state {
+        color: var(--stok-text-muted);
+        padding: 0.5rem;
+        text-align: center;
+    }
+
+    ::deep .custom-stok-grid {
+        border: none !important;
+    }
+
+    ::deep .custom-stok-grid .dxbl-grid-header-row {
+        background-color: #f1f5f9 !important;
+        color: var(--stok-text-muted) !important;
+        font-size: 0.75rem !important;
+        font-weight: 700 !important;
+        letter-spacing: 0.05em !important;
+        text-transform: uppercase !important;
+    }
+
+    ::deep .custom-stok-grid .dxbl-grid-data-cell {
+        padding: 1rem !important;
+        color: var(--stok-text-main) !important;
+        border-bottom: 1px solid var(--stok-border) !important;
+    }
+
+    .stock-badge {
+        padding: 0.375rem 0.75rem;
+        border-radius: 2rem;
+        font-size: 0.875rem;
+        font-weight: 600;
+        display: inline-block;
+    }
+
+    .status-high { background-color: var(--status-high-bg); color: var(--status-high-text); }
+    .status-medium { background-color: var(--status-medium-bg); color: var(--status-medium-text); }
+    .status-low { background-color: var(--status-low-bg); color: var(--status-low-text); }
+
+    .btn-edit,
+    .btn-delete {
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-size: 0.875rem;
+    }
+
+    .btn-edit {
+        background-color: #3b82f6;
+        color: white;
+    }
+
+    .btn-edit:hover {
+        background-color: #2563eb;
+    }
+
+    .btn-delete {
+        background-color: #ef4444;
+        color: white;
+    }
+
+    .btn-delete:hover {
+        background-color: #dc2626;
+    }
