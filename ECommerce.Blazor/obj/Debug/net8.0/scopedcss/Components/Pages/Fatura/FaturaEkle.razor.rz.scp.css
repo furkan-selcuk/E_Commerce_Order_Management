@@ -20,7 +20,7 @@
         gap: 0;
         border-bottom: 1px solid #dee2e6;
         padding: 0.5rem;
-        background: #ffffff;
+        background: #f0f0f0;
         flex-shrink: 0;
     }
 
@@ -38,11 +38,11 @@
     }
 
     .toolbar-btn:hover[b-cro6ligint] {
-        background-color: #f8f9fa;
+        background-color: #f0f0f0;
     }
 
     .toolbar-btn:active[b-cro6ligint] {
-        background-color: #e9ecef;
+        background-color: #f0f0f0;
     }
 
     .btn-content[b-cro6ligint] {
@@ -66,14 +66,14 @@
     /* Content */
     .fatura-content[b-cro6ligint] {
         padding: 1rem;
-        background: #f5f5f5;
+        background: #f0f0f0;
         overflow-y: auto;
         flex: 1;
     }
 
     /* Header Section */
     .fatura-header[b-cro6ligint] {
-        background: #ffffff;
+        background: #f0f0f0;
         padding: 1rem;
         margin-bottom: 1rem;
         border-radius: 0.25rem;
@@ -89,6 +89,9 @@
     .header-column[b-cro6ligint] {
         display: flex;
         flex-direction: column;
+        border: 1px solid #dee2e6;
+        padding: 1rem;
+        border-radius: 0.25rem;
     }
 
     /* Input Groups */
@@ -123,7 +126,7 @@
         padding: 1rem;
         border-radius: 0.25rem;
         height: 100%;
-        background: #ffffff;
+        background: #f0f0f0;
         border: 1px solid #dee2e6;
     }
 
@@ -133,14 +136,14 @@
 
     /* Tabs Section */
     .fatura-tabs-section[b-cro6ligint] {
-        background: #ffffff;
+        background: #f0f0f0;
         border-radius: 0.25rem;
         margin-bottom: 1rem;
         box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .fatura-tabs[b-cro6ligint] {
-        border-bottom: 1px solid #dee2e6;
+        border-bottom: 1px solid #d2d2d2;
     }
 
     .tabs-content[b-cro6ligint] {
@@ -161,7 +164,7 @@
 
     /* Footer */
     .fatura-footer[b-cro6ligint] {
-        background: #ffffff;
+        background: #f0f0f0;
         display: flex;
         flex-direction: row;
         justify-content: space-between;
@@ -283,7 +286,7 @@
             gap: 1rem;
         }
         .fatura-footer[b-cro6ligint] {
-        background: #ffffff;
+        background: #f0f0f0;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
@@ -337,11 +340,11 @@
         }
 
         .fatura-container[b-cro6ligint] {
-            background: white;
+            background: #f0f0f0;
         }
 
         .fatura-content[b-cro6ligint] {
             padding: 0;
-            background: white;
+            background: #f0f0f0;
         }
     }

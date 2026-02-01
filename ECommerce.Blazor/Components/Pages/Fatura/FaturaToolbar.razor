@@ -1,0 +1,89 @@
+@using DevExpress.Blazor
+
+<div class="toolbar">
+    <DxButton Click="@OnSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+        RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+        <ChildContent>
+            <div class="button-content">
+                <i class="bi bi-floppy icon-large"></i>
+                <span class="button-text">Kaydet</span>
+            </div>
+        </ChildContent>
+    </DxButton>
+    <DxButton CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+        RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+        <ChildContent>
+            <div class="button-content button-middle">
+                <i class="bi bi-list-ul icon-large"></i>
+                <span class="button-text">Liste</span>
+            </div>
+        </ChildContent>
+    </DxButton>
+    <DxButton CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+        RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+        <ChildContent>
+            <div class="button-content">
+                <i class="bi bi-files icon-large"></i>
+                <span class="button-text">Diğer</span>
+            </div>
+        </ChildContent>
+    </DxButton>
+    <DxButton CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+        RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+        <ChildContent>
+            <div class="button-content button-middle">
+                <i class="bi bi-printer icon-large"></i>
+                <span class="button-text">Yazdır</span>
+            </div>
+        </ChildContent>
+    </DxButton>
+    <DxButton Click="@OnClose" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
+        RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
+        <ChildContent>
+            <div class="button-content">
+                <i class="bi bi-box-arrow-right icon-large"></i>
+                <span class="button-text">Kapat</span>
+            </div>
+        </ChildContent>
+    </DxButton>
+</div>
+
+<style>
+    .toolbar {
+        display: flex;
+        justify-content: flex-start;
+        gap: 0;
+        flex-shrink: 0;
+    }
+
+    .custom-vertical-button {
+        min-width: 80px;
+        padding: 0.5rem;
+    }
+
+    .button-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .button-middle {
+        border-left: 1px solid #dee2e6;
+        border-right: 1px solid #dee2e6;
+        padding: 0 1rem;
+    }
+
+    .icon-large {
+        font-size: 1.5rem;
+    }
+
+    .button-text {
+        margin-top: 0.25rem;
+        font-size: 0.85rem;
+    }
+</style>
+
+@code {
+    [Parameter] public EventCallback OnSave { get; set; }
+    [Parameter] public EventCallback OnClose { get; set; }
+}

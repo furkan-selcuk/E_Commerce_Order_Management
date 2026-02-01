@@ -278,3 +278,36 @@
 
         }
     }
+
+    /* Toast Notification - Using ::deep to bypass CSS isolation */
+    [b-r22i1bwdue] .toast {
+        position: fixed !important;
+        top: 1rem !important;
+        right: 1rem !important;
+        padding: 1rem 1.5rem !important;
+        border-radius: 0.5rem !important;
+        color: white !important;
+        font-weight: 500 !important;
+        z-index: 9999 !important;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        animation: slideIn-b-r22i1bwdue 0.3s ease-out !important;
+    }
+
+    [b-r22i1bwdue] .toast-error {
+        background-color: #dc3545 !important;
+    }
+
+    [b-r22i1bwdue] .toast-success {
+        background-color: #28a745 !important;
+    }
+
+    @keyframes slideIn-b-r22i1bwdue {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }

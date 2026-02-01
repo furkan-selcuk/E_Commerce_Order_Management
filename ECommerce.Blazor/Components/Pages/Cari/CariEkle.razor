@@ -3,39 +3,16 @@
 @using ECommerce.Blazor.Models
 @inject CariService CariService
 
-<div class="modal-container">
-    <!-- 1. En Üst: Kaydet Butonu (Toolbar gibi) -->
-    <div class="toolbar">
-        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content">
-                    <i class="bi bi-floppy icon-large"></i>
-                    <span class="button-text">Kaydet</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content button-middle">
-                    <i class="bi bi-file-earmark-arrow-down icon-large"></i>
-                    <span class="button-text">Diğer</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton Click="OnSaved" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content">
-                    <i class="bi bi-box-arrow-right icon-large"></i>
-                    <span class="button-text">Kapat</span>
-                </div>
-            </Content>
-        </DxButton>
-    </div>
+@implements IDisposable
 
-    
+@if (showToast)
+{
+    <div style="position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; color: white; font-weight: 600; z-index: 99999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); background-color: @(toastClass == "toast-error" ? "#dc3545" : "#28a745");">
+        @toastMessage
+    </div>
+}
+
+<div class="modal-container">
     <div class="content-wrapper">
         <!-- 2. Kod ve Ünvan Alanları -->
         <div class="info-card">
@@ -448,26 +425,6 @@
 
 
     </div>
-
-    <!-- Floating Save Button (Mobil için) - Content wrapper içinde -->
-    <div class="floating-save-btn">
-        <DxButton Click="HandleSave" RenderStyle="ButtonRenderStyle.Primary" SizeMode="SizeMode.Large"
-            IconCssClass="bi bi-floppy">
-        </DxButton>
-    </div>
-
-    <!-- Bottom Toolbar (Mobil için görünür) -->
-    <div class="bottom-toolbar">
-        <DxButton Click="HandleSave" CssClass="bottom-toolbar-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content">
-                    <i class="bi bi-floppy icon-large"></i>
-                    <span class="button-text">Kaydet</span>
-                </div>
-            </Content>
-        </DxButton>
-    </div>
 </div>
 
 @code {
@@ -587,8 +544,55 @@
             YetkiGruplari.RemoveAt(YetkiGruplari.Count - 1);
     }
 
-    async Task HandleSave()
+    private bool showToast = false;
+    private string toastMessage = "";
+    private string toastClass = "";
+    private System.Threading.Timer? toastTimer;
+
+    private void ShowToast(string message, bool isError = true)
     {
+        Console.WriteLine($"[ShowToast] Called with message: {message}, isError: {isError}");
+        toastMessage = message;
+        toastClass = isError ? "toast-error" : "toast-success";
+        showToast = true;
+        Console.WriteLine($"[ShowToast] showToast set to: {showToast}");
+        
+        // Cancel existing timer if any
+        toastTimer?.Dispose();
+        
+        // Create new timer to hide toast after 3 seconds
+        toastTimer = new System.Threading.Timer(_ =>
+        {
+            Console.WriteLine("[ShowToast] Timer callback - hiding toast");
+            showToast = false;
+            InvokeAsync(StateHasChanged);
+        }, null, 3000, System.Threading.Timeout.Infinite);
+        
+        StateHasChanged();
+        Console.WriteLine("[ShowToast] StateHasChanged called");
+    }
+
+    public void Dispose()
+    {
+        toastTimer?.Dispose();
+    }
+
+    public async Task HandleSave()
+    {
+        // Zorunlu alan kontrolü
+        var missingFields = new List<string>();
+
+        if (string.IsNullOrWhiteSpace(CariKodu))
+            missingFields.Add("Cari Kodu");
+        if (string.IsNullOrWhiteSpace(CariUnvani))
+            missingFields.Add("Cari Ünvanı");
+
+        if (missingFields.Any())
+        {
+            ShowToast($"Lütfen şu alanları doldurun: {string.Join(", ", missingFields)}");
+            return;
+        }
+
         if (CariId == null)
         {
             var dto = new CariCreateDto
@@ -604,10 +608,13 @@
             try 
             {
                 await CariService.AddAsync(dto);
+                ShowToast("Cari başarıyla kaydedildi!", false);
+                await Task.Delay(1000);
                 await OnSaved.InvokeAsync();
             }
             catch (Exception ex)
             {
+                ShowToast($"Hata: {ex.Message}");
                 Console.WriteLine($"Hata: {ex.Message}");
             }
         }
@@ -627,10 +634,13 @@
             try 
             {
                 await CariService.UpdateAsync(dto);
+                ShowToast("Cari başarıyla güncellendi!", false);
+                await Task.Delay(1000);
                 await OnSaved.InvokeAsync();
             }
             catch (Exception ex)
             {
+                ShowToast($"Hata: {ex.Message}");
                 Console.WriteLine($"Hata: {ex.Message}");
             }
         }

@@ -3,65 +3,16 @@
 @using ECommerce.Blazor.Models
 @inject StokService StokService
 
-<div class="modal-container">
-    <!-- 1. En Üst: Kaydet Butonu  -->
-    <div class="toolbar">
-        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content button-middle">
-                    <i class="bi bi-floppy icon-large"></i>
-                    <span class="button-text">Kaydet</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content ">
-                    <i class="bi bi-plus icon-large"></i>
-                    <span class="button-text">Ekle</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content button-middle">
-                    <i class="bi bi-tag icon-large"></i>
-                    <span class="button-text">Fiyatlar</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content">
-                    <i class="bi bi-printer icon-large"></i>
-                    <span class="button-text">Yazdır</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content button-middle">
-                    <i class="bi bi-file-earmark-arrow-down icon-large"></i>
-                    <span class="button-text">Diğer</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton Click="HandleSave" CssClass="custom-vertical-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content">
-                    <i class="bi bi-box-arrow-right icon-large"></i>
-                    <span class="button-text">Kapat</span>
-                </div>
-            </Content>
-        </DxButton>
-    </div>
+@implements IDisposable
 
+@if (showToast)
+{
+    <div style="position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; color: white; font-weight: 600; z-index: 99999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); background-color: @(toastClass == "toast-error" ? "#dc3545" : "#28a745");">
+        @toastMessage
+    </div>
+}
+
+<div class="modal-container">
     <div class="content-wrapper">
         <!-- 2. Kod ve Ünvan Alanları -->
         <div class="info-card">
@@ -457,26 +408,6 @@
 
 
     </div>
-
-    <!-- Floating Save Button (Mobil için) - Content wrapper içinde -->
-    <div class="floating-save-btn">
-        <DxButton Click="HandleSave" RenderStyle="ButtonRenderStyle.Primary" SizeMode="SizeMode.Large"
-            IconCssClass="bi bi-floppy">
-        </DxButton>
-    </div>
-
-    <!-- Bottom Toolbar (Mobil için görünür) -->
-    <div class="bottom-toolbar">
-        <DxButton Click="HandleSave" CssClass="bottom-toolbar-button" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="button-content">
-                    <i class="bi bi-floppy icon-large"></i>
-                    <span class="button-text">Kaydet</span>
-                </div>
-            </Content>
-        </DxButton>
-    </div>
 </div>
 
 @code {
@@ -531,6 +462,8 @@
     [Parameter] public EventCallback OnSaved { get; set; }
     [Parameter] public string? InitialStokAdi { get; set; }
     [Parameter] public string? InitialStokKodu { get; set; }
+    [Parameter] public EventCallback OnSaveRequested { get; set; }
+    [Parameter] public EventCallback OnCloseRequested { get; set; }
 
     private int? _loadedStokId;
 
@@ -561,8 +494,58 @@
         }
     }
 
-    async Task HandleSave()
+    protected override void OnInitialized()
     {
+        // Initialize EventCallbacks if not provided
+        if (!OnSaveRequested.HasDelegate)
+        {
+            OnSaveRequested = EventCallback.Factory.Create(this, HandleSave);
+        }
+    }
+
+    private bool showToast = false;
+    private string toastMessage = "";
+    private string toastClass = "";
+    private System.Threading.Timer? toastTimer;
+
+    private void ShowToast(string message, bool isError = true)
+    {
+        Console.WriteLine($"[StokEkle ShowToast] {message}");
+        toastMessage = message;
+        toastClass = isError ? "toast-error" : "toast-success";
+        showToast = true;
+        
+        toastTimer?.Dispose();
+        toastTimer = new System.Threading.Timer(_ =>
+        {
+            showToast = false;
+            InvokeAsync(StateHasChanged);
+        }, null, 3000, System.Threading.Timeout.Infinite);
+        
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        toastTimer?.Dispose();
+    }
+
+    public async Task HandleSave()
+    {
+        // Zorunlu alan kontrolü
+        var missingFields = new List<string>();
+
+        if (string.IsNullOrWhiteSpace(StokKodu))
+            missingFields.Add("Stok Kodu");
+        if (string.IsNullOrWhiteSpace(StokUnvani))
+            missingFields.Add("Stok Adı");
+
+        if (missingFields.Any())
+        {
+            ShowToast($"Lütfen şu alanları doldurun: {string.Join(", ", missingFields)}");
+            return;
+        }
+
         int stokMiktarInt = 0;
         int.TryParse(StokMiktar, out stokMiktarInt);
 
@@ -579,10 +562,13 @@
             try
             {
                 await StokService.AddAsync(dto);
+                ShowToast("Stok başarıyla kaydedildi!", false);
+                await Task.Delay(1000);
                 await OnSaved.InvokeAsync();
             }
             catch (Exception ex)
             {
+                ShowToast($"Hata: {ex.Message}");
                 Console.WriteLine($"Hata: {ex.Message}");
             }
         }

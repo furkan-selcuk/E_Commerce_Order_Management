@@ -104,7 +104,12 @@
 @if (showModal)
 {
     <Modal Title="Fatura Ekle" OnClose="CloseModal">
-        <FaturaEkle />
+        <HeaderToolbar>
+            <FaturaToolbar OnSave="@SaveCurrentFatura" OnClose="CloseModal" />
+        </HeaderToolbar>
+        <ChildContent>
+            <FaturaEkle @ref="faturaEkleRef" OnSaved="CloseModal" />
+        </ChildContent>
     </Modal>
 }
 
@@ -116,6 +121,7 @@
     private List<ECommerce.Blazor.Models.FaturaListDto>? FaturaListesi;
     private bool showModal = false;
     private HashSet<int> expandedFaturaIds = new();
+    private FaturaEkle? faturaEkleRef;
 
     protected override async Task OnInitializedAsync()
     {
@@ -142,4 +148,12 @@
     }
 
     private bool IsExpanded(int id) => expandedFaturaIds.Contains(id);
+
+    private async Task SaveCurrentFatura()
+    {
+        if (faturaEkleRef != null)
+        {
+            await faturaEkleRef.SaveFatura();
+        }
+    }
 }

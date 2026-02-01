@@ -106,9 +106,14 @@
 @if (showModal)
 {
     <Modal Title="@modalTitle" OnClose="CloseModal">
-        <CariEkle @key="editingCariId"
-                  CariId="@editingCariId"
-                  OnSaved="CloseModal" />
+        <HeaderToolbar>
+            <CariToolbar OnSave="@SaveCurrentCari" OnClose="CloseModal" />
+        </HeaderToolbar>
+        <ChildContent>
+            <CariEkle @ref="cariEkleRef" @key="editingCariId"
+                      CariId="@editingCariId"
+                      OnSaved="CloseModal" />
+        </ChildContent>
     </Modal>
 }
 
@@ -118,6 +123,7 @@
     private int? editingCariId;
     private string modalTitle => editingCariId == null ? "Cari Ekle" : "Cari Güncelle";
     private HashSet<int> expandedCariIds = new();
+    private CariEkle? cariEkleRef;
 
     protected override async Task OnInitializedAsync()
     {
@@ -163,5 +169,13 @@
         showModal = false;
         editingCariId = null;
         await LoadData();
+    }
+
+    private async Task SaveCurrentCari()
+    {
+        if (cariEkleRef != null)
+        {
+            await cariEkleRef.HandleSave();
+        }
     }
 }

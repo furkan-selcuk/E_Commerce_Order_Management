@@ -11,41 +11,9 @@
         overflow-x: hidden;
     }
 
-    .toolbar {
-        display: flex;
-        justify-content: flex-start;
-        margin-bottom: 0.5rem;
-        border-bottom: 1px solid #dee2e6;
-        padding: 0 0.5rem;
-        flex-shrink: 0;
-    }
-
-    .bottom-toolbar {
-        display: none;
-        justify-content: flex-end;
-        border-top: 1px solid #dee2e6;
-        padding: 0.5rem;
-        flex-shrink: 0;
-    }
-
-    .bottom-toolbar-button {
-        min-width: 80px;
-        padding: 0.5rem;
-    }
-
     .custom-vertical-button {
         min-width: 80px;
         padding: 0.5rem;
-    }
-
-    .floating-save-btn {
-        display: none;
-        position: absolute;
-        bottom: 2rem;
-        right: 2rem;
-        z-index: 1000;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        border-radius: 50%;
     }
 
     .code-input-wrapper {
@@ -158,15 +126,6 @@
     }
 
     @media (max-width: 1199px) {
-
-        .toolbar {
-            display: flex;
-        }
-
-        .bottom-toolbar {
-            display: flex;
-        }
-
         .general-content {
             flex-direction: column;
         }

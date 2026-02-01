@@ -108,7 +108,7 @@ namespace ECommerce.DataAccess.Repositories
                                      WHERE Id = @Id";
 
             using var connection = _context.CreateConnection();
-            await connection.ExecuteAsync(query, new { CariId = cariId });
+            await connection.ExecuteAsync(query, new { Id = cariId });
         }
     }
 }

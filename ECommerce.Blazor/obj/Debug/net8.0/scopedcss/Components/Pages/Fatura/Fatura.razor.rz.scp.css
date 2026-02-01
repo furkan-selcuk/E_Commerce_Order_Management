@@ -1,3 +1,4 @@
+/* Fatura View Styles */
 .fatura-view-container[b-pevg74r1hs] {
     --fatura-primary: #6366f1;
     --fatura-primary-hover: #4f46e5;
@@ -14,7 +15,6 @@
     .fatura-view-container[b-pevg74r1hs] {
         padding: 2rem;
         background-color: var(--fatura-bg);
-        min-height: calc(100vh - 60px);
         font-family: 'Outfit', sans-serif;
     }
 
@@ -262,7 +262,7 @@
         background-color: transparent !important;
     }
 
-    @@media (max-width: 1400px) {
+    @media (max-width: 1400px) {
         .fatura-header[b-pevg74r1hs] {
             flex-direction: column;
             align-items: flex-start;

@@ -11,41 +11,9 @@
         overflow-x: hidden;
     }
 
-    .toolbar[b-uqxb4yr90z] {
-        display: flex;
-        justify-content: flex-start;
-        margin-bottom: 0.5rem;
-        border-bottom: 1px solid #dee2e6;
-        padding: 0 0.5rem;
-        flex-shrink: 0;
-    }
-
-    .bottom-toolbar[b-uqxb4yr90z] {
-        display: none;
-        justify-content: flex-end;
-        border-top: 1px solid #dee2e6;
-        padding: 0.5rem;
-        flex-shrink: 0;
-    }
-
-    .bottom-toolbar-button[b-uqxb4yr90z] {
-        min-width: 80px;
-        padding: 0.5rem;
-    }
-
     .custom-vertical-button[b-uqxb4yr90z] {
         min-width: 80px;
         padding: 0.5rem;
-    }
-
-    .floating-save-btn[b-uqxb4yr90z] {
-        display: none;
-        position: absolute;
-        bottom: 2rem;
-        right: 2rem;
-        z-index: 1000;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        border-radius: 50%;
     }
 
     .code-input-wrapper[b-uqxb4yr90z] {
@@ -158,15 +126,6 @@
     }
 
     @media (max-width: 1199px) {
-
-        .toolbar[b-uqxb4yr90z] {
-            display: flex;
-        }
-
-        .bottom-toolbar[b-uqxb4yr90z] {
-            display: flex;
-        }
-
         .general-content[b-uqxb4yr90z] {
             flex-direction: column;
         }

@@ -5,65 +5,16 @@
 @inject StokService StokService
 @inject CariService CariService
 
-<div class="fatura-container">
-    <!-- Toolbar -->
-    <div class="fatura-toolbar">
-        <DxButton Click="@SaveFatura" CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="btn-content">
-                    <i class="bi bi-floppy icon-lg"></i>
-                    <span>Kaydet</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="btn-content">
-                    <i class="bi bi-list-ul icon-lg"></i>
-                    <span>Liste</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="btn-content">
-                    <i class="bi bi-files icon-lg"></i>
-                    <span>Diğer</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="btn-content">
-                    <i class="bi bi-printer icon-lg"></i>
-                    <span>Yazdır</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="btn-content">
-                    <i class="bi bi-search icon-lg"></i>
-                    <span>Ön İzleme</span>
-                </div>
-            </Content>
-        </DxButton>
-        <DxButton CssClass="toolbar-btn" RenderStyle="ButtonRenderStyle.None"
-            RenderStyleMode="ButtonRenderStyleMode.Outline" SizeMode="SizeMode.Small">
-            <Content>
-                <div class="btn-content">
-                    <i class="bi bi-box-arrow-right icon-lg"></i>
-                    <span>Kapat</span>
-                </div>
-            </Content>
-        </DxButton>
-    </div>
+@implements IDisposable
 
+@if (showToast)
+{
+    <div style="position: fixed; top: 20px; right: 20px; padding: 15px 25px; border-radius: 8px; color: white; font-weight: 600; z-index: 99999; box-shadow: 0 4px 12px rgba(0,0,0,0.3); background-color: @(toastClass == "toast-error" ? "#dc3545" : "#28a745");">
+        @toastMessage
+    </div>
+}
+
+<div class="fatura-container">
     <!-- Ana İçerik -->
     <div class="fatura-content">
         @if (showToast)
@@ -196,17 +147,23 @@
                 {
                     <!-- Satırlar Gridi -->
                     <div style="margin-bottom:12px;display:flex;gap:8px;align-items:end;">
-                        <div style="display:flex;gap:8px;align-items:center;">
-                            <DxComboBox Data="@StokList" @bind-Value="newSelectedStokId" ValueFieldName="StokId"
-                                TextFieldName="StokAdi" Placeholder="Stok seçç">
-                            </DxComboBox>
-
-
-
-                            
-                            <DxTextBox Placeholder="Miktar" @bind-Text="newMiktarStr" CssClass="total-input" />
-                            <DxTextBox Placeholder="Birim Fiyat" @bind-Text="newBirimFiyatStr" CssClass="total-input" />
-                            <DxButton Text="Satır Ekle" Click="AddSatir" RenderStyle="ButtonRenderStyle.Primary" />
+                        <div style="display:flex; flex-direction:row; gap:8px;align-items:center;">
+                            <DxFormLayout>
+                                <DxFormLayoutItem Caption="Stok" ColSpanMd="3">
+                                    <DxComboBox Data="@StokList" @bind-Value="newSelectedStokId" ValueFieldName="StokId"
+                                        TextFieldName="StokAdi" Placeholder="Stok seçç">
+                                    </DxComboBox>
+                                </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Miktar" ColSpanMd="3">
+                                <DxTextBox Placeholder="Miktar" @bind-Text="newMiktarStr" CssClass="total-input" />
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Birim Fiyat" ColSpanMd="3">
+                                <DxTextBox Placeholder="Birim Fiyat" @bind-Text="newBirimFiyatStr" CssClass="total-input" />
+                            </DxFormLayoutItem>
+                            <DxFormLayoutItem Caption="Satır Ekle" ColSpanMd="3">
+                                <DxButton Text="Satır Ekle" Click="AddSatir" RenderStyle="ButtonRenderStyle.Primary" />
+                            </DxFormLayoutItem>
+                            </DxFormLayout>
                         </div>
                     </div>
                     <div class="satir-grid-wrapper">
@@ -422,25 +379,25 @@
     string toastMessage = "";
     bool showToast = false;
     string toastClass = "";
+    private System.Threading.Timer? toastTimer;
 
     void ShowToast(string message, bool isError = true)
-{
-    toastMessage = message;
-    toastClass = isError ? "toast-error" : "toast-success";
-    showToast = true;
-
-    
-    InvokeAsync(StateHasChanged);
-
-    _ = Task.Run(async () =>
     {
-        await Task.Delay(3000);
-        showToast = false;
-        await InvokeAsync(StateHasChanged);
-    });
-}
+        toastMessage = message;
+        toastClass = isError ? "toast-error" : "toast-success";
+        showToast = true;
 
-    async Task SaveFatura()
+        toastTimer?.Dispose();
+        toastTimer = new System.Threading.Timer(_ =>
+        {
+            showToast = false;
+            InvokeAsync(StateHasChanged);
+        }, null, 3000, System.Threading.Timeout.Infinite);
+
+        InvokeAsync(StateHasChanged);
+    }
+
+    public async Task SaveFatura()
 {
     Console.WriteLine("SaveFatura tetiklendi");
     if (!FaturaSatirlari.Any())
@@ -513,6 +470,12 @@
         ShowToast($"Fatura kaydında hata: {ex.Message}");
     }
 }
+
+    public void Dispose()
+    {
+        toastTimer?.Dispose();
+    }
+
     class FaturaSatir
     {
         public int Satir { get; set; }

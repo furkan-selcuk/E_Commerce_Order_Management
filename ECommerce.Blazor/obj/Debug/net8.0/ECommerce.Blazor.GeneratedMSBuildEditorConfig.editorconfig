@@ -30,6 +30,10 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xMYXlvdXRcTG9naW5MYXlvdXQucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Cari/CariToolbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xDYXJpXENhcmlUb29sYmFyLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Error.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xFcnJvci5yYXpvcg==
 build_metadata.AdditionalFiles.CssScope = 
@@ -38,12 +42,20 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYXR1cmFcRmF0dXJhU2F0aXJMaXN0ZXNpLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Fatura/FaturaToolbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xGYXR1cmFcRmF0dXJhVG9vbGJhci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
 [C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Home/Home.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xIb21lXEhvbWUucmF6b3I=
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Stok/StokEditModal.razor]
 build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdG9rXFN0b2tFZGl0TW9kYWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Pages/Stok/StokToolbar.razor]
+build_metadata.AdditionalFiles.TargetPath = Q29tcG9uZW50c1xQYWdlc1xTdG9rXFN0b2tUb29sYmFyLnJhem9y
 build_metadata.AdditionalFiles.CssScope = 
 
 [C:/Users/Hp/Desktop/ECommerce/ecommerce.blazor/Components/Routes.razor]

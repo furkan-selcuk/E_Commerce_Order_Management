@@ -13,12 +13,6 @@ namespace ECommerce.Blazor.Services
         {
             try
             {
-                // AuthController expects query params or form data? 
-                // Let's check AuthController again.
-                // [HttpPost("login")] public IActionResult Login(string username, string password)
-                // This usually means [FromQuery] or [FromForm] in newer ASP.NET Core if not specified.
-                // But if it's string username, it's likely [FromQuery].
-                
                 var response = await _apiClient.PostAsync<object, LoginResponse>($"api/Auth/login?username={username}&password={password}", new { });
                 if (response != null && !string.IsNullOrEmpty(response.Token))
                 {

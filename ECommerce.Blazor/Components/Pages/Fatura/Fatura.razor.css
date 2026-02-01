@@ -1,3 +1,4 @@
+/* Fatura View Styles */
 .fatura-view-container {
     --fatura-primary: #6366f1;
     --fatura-primary-hover: #4f46e5;
@@ -14,7 +15,6 @@
     .fatura-view-container {
         padding: 2rem;
         background-color: var(--fatura-bg);
-        min-height: calc(100vh - 60px);
         font-family: 'Outfit', sans-serif;
     }
 

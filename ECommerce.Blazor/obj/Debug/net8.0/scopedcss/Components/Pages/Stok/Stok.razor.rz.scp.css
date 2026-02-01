@@ -1,3 +1,4 @@
+/* Stok View Styles */
 .stok-view-container[b-syl4ltfevc] {
     --stok-primary: #6366f1;
     --stok-primary-hover: #4f46e5;
@@ -18,7 +19,7 @@
     .stok-view-container[b-syl4ltfevc] {
         padding: 2rem;
         background-color: var(--stok-bg);
-        min-height: calc(100vh - 60px);
+        
         font-family: 'Outfit', sans-serif;
     }
 
@@ -26,7 +27,7 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 2rem;
+        
     }
 
     .page-title[b-syl4ltfevc] {

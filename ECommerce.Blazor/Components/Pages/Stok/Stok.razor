@@ -45,7 +45,7 @@
                                 </div>
                             </CellDisplayTemplate>
                         </DxGridDataColumn>
-                        <DxGridDataColumn Caption="İşlemler" FieldName="StokId" Width="180px">
+                        <DxGridDataColumn Caption="İşlemler" FieldName="StokId" Width="180px" FilterRowEditorVisible="false">
                             <CellDisplayTemplate>
                                 @{ var id = (int)context.Value; }
                                 <div style="display:flex;gap:8px;">
@@ -102,15 +102,20 @@
 
 @if (showModal)
 {
-    <Modal Title="Stok Ekle" OnClose="CloseModal">
-        @if (editingStokId.HasValue)
-        {
-            <StokEditModal StokId="@editingStokId.Value" OnSaved="CloseModal" />
-        }
-        else
-        {
-            <StokEkle OnSaved="CloseModal" />
-        }
+    <Modal Title="@GetModalTitle()" OnClose="CloseModal">
+        <HeaderToolbar>
+            <StokToolbar OnSave="@SaveCurrentStok" OnClose="CloseModal" />
+        </HeaderToolbar>
+        <ChildContent>
+            @if (editingStokId.HasValue)
+            {
+                <StokEditModal @ref="stokEditModalRef" StokId="@editingStokId.Value" OnSaved="CloseModal" />
+            }
+            else
+            {
+                <StokEkle @ref="stokEkleRef" OnSaved="CloseModal" />
+            }
+        </ChildContent>
     </Modal>
 }
 
@@ -120,6 +125,8 @@
     private bool showModal = false;
     private int? editingStokId;
     private HashSet<int> expandedStokIds = new();
+    private StokEkle? stokEkleRef;
+    private StokEditModal? stokEditModalRef;
 
     protected override async Task OnInitializedAsync()
     {
@@ -164,4 +171,21 @@
     }
 
     private bool IsExpanded(int id) => expandedStokIds.Contains(id);
+
+    private string GetModalTitle()
+    {
+        return editingStokId.HasValue ? "Stok Güncelle" : "Stok Ekle";
+    }
+
+    private async Task SaveCurrentStok()
+    {
+        if (stokEkleRef != null)
+        {
+            await stokEkleRef.HandleSave();
+        }
+        else if (stokEditModalRef != null)
+        {
+            await stokEditModalRef.HandleSave();
+        }
+    }
 }
